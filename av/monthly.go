@@ -7,6 +7,7 @@ import (
 
 type monthlyConfig struct {
 	dataType string
+	adjusted bool
 }
 
 type monthlyOption func(opt *monthlyConfig) error
@@ -19,18 +20,36 @@ func SetMonthlyDataType(s string) monthlyOption {
 	}
 }
 
+func SetMonthlyAdjusted(b bool) monthlyOption {
+
+	return func(config *monthlyConfig) error {
+		config.adjusted = b
+		return nil
+	}
+}
+
 func Monthly(symbol string, apikey string, opts ...monthlyOption) (*http.Response, error) {
+
+	var adjustedString string
 
 	defaultOptions := &monthlyConfig{
 		dataType: "json",
+		adjusted: false,
 	}
 
 	for _, opt := range opts {
 		opt(defaultOptions)
 	}
 
-	url := fmt.Sprintf("%s/query?function=TIME_SERIES_MONTHLY&symbol=%s&apikey=%s&datatype=%s&outputsize=%s",
+	if defaultOptions.adjusted == true {
+		adjustedString = "TIME_SERIES_MONTHLY_ADJUSTED"
+	} else {
+		adjustedString = "TIME_SERIES_MONTHLY"
+	}
+
+	url := fmt.Sprintf("%s/query?function=%s&symbol=%s&apikey=%s&datatype=%s&outputsize=%s",
 		AV_BASE_URL,
+		adjustedString,
 		symbol,
 		apikey,
 		defaultOptions.dataType)
