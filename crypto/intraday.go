@@ -24,7 +24,7 @@ func SetIntradayMarket(s string) intradayOption {
 func Intraday(symbol string, apikey string, opts ...intradayOption) (*http.Response, error) {
 
 	defaultOptions := &intradayConfig{
-		market: "BTC",
+		market: "USD",
 	}
 
 	for _, opt := range opts {

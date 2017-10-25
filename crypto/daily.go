@@ -24,7 +24,7 @@ func SetDailyMarket(s string) dailyOption {
 func Daily(symbol string, apikey string, opts ...dailyOption) (*http.Response, error) {
 
 	defaultOptions := &dailyConfig{
-		market: "BTC",
+		market: "USD",
 	}
 
 	for _, opt := range opts {
