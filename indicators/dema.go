@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"../av"
+	"github.com/cmckee-dev/go-alpha-vantage/av"
 )
 
 func DEMA(symbol string, apikey string, interval string, timePeriod string, seriesType string) (*http.Response, error) {
