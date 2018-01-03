@@ -50,7 +50,7 @@ func Weekly(symbol string, apikey string, opts ...weeklyOption) (*http.Response,
 	}
 
 	url := fmt.Sprintf("%s/query?function=%s&symbol=%s&apikey=%s&datatype=%s&outputsize=%s",
-		AV_BASE_URL,
+		av.AV_BASE_URL,
 		adjustedString,
 		symbol,
 		apikey,

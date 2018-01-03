@@ -52,7 +52,7 @@ func Intraday(symbol string, apikey string, opts ...intradayOption) (*http.Respo
 	}
 
 	url := fmt.Sprintf("%s/query?function=TIME_SERIES_INTRADAY&symbol=%s&apikey=%s&interval=%s&datatype=%s&outputsize=%s",
-		AV_BASE_URL,
+		av.AV_BASE_URL,
 		symbol,
 		apikey,
 		defaultOptions.interval,
