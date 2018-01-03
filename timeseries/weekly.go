@@ -3,6 +3,8 @@ package timeseries // alpha vantage
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/cmckee-dev/go-alpha-vantage/av"
 )
 
 type weeklyConfig struct {
