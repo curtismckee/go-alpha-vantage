@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"../av"
+	"github.com/cmckee-dev/go-alpha-vantage/av"
 )
 
 type dailyConfig struct {
