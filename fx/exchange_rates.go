@@ -30,7 +30,7 @@ func SetToCurrency(s string) exchangeRatesOption {
 	}
 }
 
-func ExchangeRates(symbol string, apikey string, opts ...exchangeRatesOption) (*http.Response, error) {
+func ExchangeRates(apikey string, opts ...exchangeRatesOption) (*http.Response, error) {
 
 	defaultOptions := &exchangeRatesConfig{
 		fromCurrency: "USD",
@@ -41,9 +41,8 @@ func ExchangeRates(symbol string, apikey string, opts ...exchangeRatesOption) (*
 		opt(defaultOptions)
 	}
 
-	url := fmt.Sprintf("%s/query?function=CURRENCY_EXCHANGE_RATE&symbol=%s&apikey=%s&from_currency=%s&to_currency=%s",
+	url := fmt.Sprintf("%s/query?function=CURRENCY_EXCHANGE_RATE&apikey=%s&from_currency=%s&to_currency=%s",
 		av.AV_BASE_URL,
-		symbol,
 		apikey,
 		defaultOptions.fromCurrency,
 		defaultOptions.toCurrency)
