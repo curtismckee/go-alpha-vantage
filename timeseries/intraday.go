@@ -1,4 +1,4 @@
-package av // alpha vantage
+package timeseries // alpha vantage
 
 import (
 	"fmt"
