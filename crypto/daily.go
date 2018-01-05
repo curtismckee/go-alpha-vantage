@@ -21,7 +21,7 @@ func SetDailyMarket(s string) dailyOption {
 	}
 }
 
-func Daily(symbol string, apikey string, opts ...dailyOption) (*http.Response, error) {
+func (c *cryptoClient) Daily(symbol string, opts ...dailyOption) (*http.Response, error) {
 
 	defaultOptions := &dailyConfig{
 		market: "USD",
@@ -34,7 +34,7 @@ func Daily(symbol string, apikey string, opts ...dailyOption) (*http.Response, e
 	url := fmt.Sprintf("%s/query?function=DIGITAL_CURRENCY_DAILY&symbol=%s&apikey=%s&market=%s",
 		av.AV_BASE_URL,
 		symbol,
-		apikey,
+		c.apikey,
 		defaultOptions.market)
 
 	resp, err := http.Get(url)

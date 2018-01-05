@@ -21,7 +21,7 @@ func SetWeeklyMarket(s string) weeklyOption {
 	}
 }
 
-func Weekly(symbol string, apikey string, opts ...weeklyOption) (*http.Response, error) {
+func (c *cryptoClient) Weekly(symbol string, opts ...weeklyOption) (*http.Response, error) {
 
 	defaultOptions := &weeklyConfig{
 		market: "USD",
@@ -34,7 +34,7 @@ func Weekly(symbol string, apikey string, opts ...weeklyOption) (*http.Response,
 	url := fmt.Sprintf("%s/query?function=DIGITAL_CURRENCY_WEEKLY&symbol=%s&apikey=%s&market=%s",
 		av.AV_BASE_URL,
 		symbol,
-		apikey,
+		c.apikey,
 		defaultOptions.market)
 
 	resp, err := http.Get(url)

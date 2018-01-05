@@ -21,7 +21,7 @@ func SetMonthlyMarket(s string) monthlyOption {
 	}
 }
 
-func Monthly(symbol string, apikey string, opts ...monthlyOption) (*http.Response, error) {
+func (c *cryptoClient) Monthly(symbol string, opts ...monthlyOption) (*http.Response, error) {
 
 	defaultOptions := &monthlyConfig{
 		market: "USD",
@@ -34,7 +34,7 @@ func Monthly(symbol string, apikey string, opts ...monthlyOption) (*http.Respons
 	url := fmt.Sprintf("%s/query?function=DIGITAL_CURRENCY_MONTHLY&symbol=%s&apikey=%s&market=%s",
 		av.AV_BASE_URL,
 		symbol,
-		apikey,
+		c.apikey,
 		defaultOptions.market)
 
 	resp, err := http.Get(url)

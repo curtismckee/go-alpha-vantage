@@ -21,7 +21,7 @@ func SetIntradayMarket(s string) intradayOption {
 	}
 }
 
-func Intraday(symbol string, apikey string, opts ...intradayOption) (*http.Response, error) {
+func (c *cryptoClient) Intraday(symbol string, opts ...intradayOption) (*http.Response, error) {
 
 	defaultOptions := &intradayConfig{
 		market: "USD",
@@ -34,7 +34,7 @@ func Intraday(symbol string, apikey string, opts ...intradayOption) (*http.Respo
 	url := fmt.Sprintf("%s/query?function=DIGITAL_CURRENCY_INTRADAY&symbol=%s&apikey=%s&market=%s",
 		av.AV_BASE_URL,
 		symbol,
-		apikey,
+		c.apikey,
 		defaultOptions.market)
 
 	resp, err := http.Get(url)
