@@ -20,7 +20,7 @@ const (
 	queryEndpoint   = "function"
 
 	valueCompact = "compact"
-	valueJson    = "json"
+	valueJson    = "csv"
 
 	pathQuery = "query"
 
@@ -53,7 +53,8 @@ func NewConnectionHost(host string) Connection {
 func (conn *avConnection) Request(endpoint *url.URL) (*http.Response, error) {
 	endpoint.Scheme = schemeHttps
 	endpoint.Host = conn.host
-	return conn.client.Get(endpoint.String())
+	targetUrl := endpoint.String()
+	return conn.client.Get(targetUrl)
 }
 
 type Client struct {
@@ -78,21 +79,22 @@ func (c *Client) buildRequestPath(params map[string]string) *url.URL {
 	endpoint.Path = pathQuery
 
 	// base parameters
-	endpoint.Query()
 	query := endpoint.Query()
 	query.Set(queryApiKey, c.apiKey)
-	query.Set(queryDataType, valueCompact)
-	query.Set(queryOutputSize, valueJson)
+	query.Set(queryDataType, valueJson)
+	query.Set(queryOutputSize, valueCompact)
 
 	// additional parameters
 	for key, value := range params {
 		query.Set(key, value)
 	}
 
+	endpoint.RawQuery = query.Encode()
+
 	return endpoint
 }
 
-func (c *Client) StockTimeSeries(timeSeries TimeSeries, symbol string) (*TimeSeriesData, error) {
+func (c *Client) StockTimeSeries(timeSeries TimeSeries, symbol string) ([]*TimeSeriesValue, error) {
 	endpoint := c.buildRequestPath(map[string]string{
 		queryEndpoint: timeSeries.String(),
 		querySymbol:   symbol,
@@ -103,5 +105,6 @@ func (c *Client) StockTimeSeries(timeSeries TimeSeries, symbol string) (*TimeSer
 		return nil, err
 	}
 
-	return parseTimeSeriesData(response)
+	defer response.Body.Close()
+	return parseTimeSeriesData(response.Body)
 }

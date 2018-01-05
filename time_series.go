@@ -2,9 +2,9 @@ package av
 
 import (
 	"time"
-	"encoding/json"
-	"net/http"
 	"sort"
+	"encoding/csv"
+	"io"
 )
 
 type TimeSeries uint8
@@ -43,20 +43,7 @@ const (
 	timeSeriesDateFormat = "2006-01-02"
 )
 
-type TimeSeriesData struct {
-	Meta   *TimeSeriesMeta
-	Values []*TimeSeriesValues
-}
-
-type TimeSeriesMeta struct {
-	Information   string
-	Symbol        string
-	LastRefreshed time.Time
-	OutputSize    string
-	TimeZone      string
-}
-
-type TimeSeriesValues struct {
+type TimeSeriesValue struct {
 	Date   time.Time
 	Open   float64
 	High   float64
@@ -66,99 +53,96 @@ type TimeSeriesValues struct {
 }
 
 // sortTimeSeriesValuesByDate allows DailyValues slices to be sorted by date in ascending order
-type sortTimeSeriesValuesByDate []*TimeSeriesValues
+type sortTimeSeriesValuesByDate []*TimeSeriesValue
 
 func (b sortTimeSeriesValuesByDate) Len() int           { return len(b) }
 func (b sortTimeSeriesValuesByDate) Less(i, j int) bool { return b[i].Date.Before(b[j].Date) }
 func (b sortTimeSeriesValuesByDate) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
 
-func parseTimeSeriesData(res *http.Response) (*TimeSeriesData, error) {
-	defer res.Body.Close()
-	timeSeries := &TimeSeriesData{}
-	if err := json.NewDecoder(res.Body).Decode(timeSeries); err != nil {
+func parseTimeSeriesData(r io.Reader) ([]*TimeSeriesValue, error) {
+
+	reader := csv.NewReader(r)
+	reader.ReuseRecord = true // optimization
+
+	// strip header
+	if _, err := reader.Read(); err != nil {
+		if err == io.EOF {
+			return nil, nil
+		}
 		return nil, err
 	}
 
-	// sort dates
-	sort.Sort(sortTimeSeriesValuesByDate(timeSeries.Values))
+	values := make([]*TimeSeriesValue, 0, 64)
 
-	return timeSeries, nil
+	for {
+		record, err := reader.Read()
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			return nil, err
+		}
+		value, err := parseTimeSeriesRecord(record)
+		if err != nil {
+			return nil, err
+		}
+		values = append(values, value)
+	}
+
+	// sort values by date
+	sort.Sort(sortTimeSeriesValuesByDate(values))
+
+	return values, nil
+
 }
 
-func (m *TimeSeriesMeta) UnmarshalJSON(b []byte) error {
-	values := make(map[string]string)
-	if err := json.Unmarshal(b, &values); err != nil {
-		return err
-	}
+func parseTimeSeriesRecord(s []string) (*TimeSeriesValue, error) {
+	const (
+		timestamp = iota
+		open
+		high
+		low
+		close
+		volume
+	)
 
-	s, err := parseString(values, "1. Information")
+	value := &TimeSeriesValue{}
+
+	d, err := parseDate(timeSeriesDateFormat, s[timestamp])
 	if err != nil {
-		return err
+		return nil, err
 	}
-	m.Information = s
+	value.Date = d
 
-	s, err = parseString(values, "2. Symbol")
+	f, err := parseFloat(s[open])
 	if err != nil {
-		return err
+		return nil, err
 	}
-	m.Symbol = s
+	value.Open = f
 
-	d, err := parseDate(timeSeriesDateFormat, values, "3. Last Refreshed")
+	f, err = parseFloat(s[high])
 	if err != nil {
-		return err
+		return nil, err
 	}
-	m.LastRefreshed = d
+	value.High = f
 
-	s, err = parseString(values, "4. Output Size")
+	f, err = parseFloat(s[low])
 	if err != nil {
-		return err
+		return nil, err
 	}
-	m.OutputSize = s
+	value.Low = f
 
-	s, err = parseString(values, "5. Time Zone")
+	f, err = parseFloat(s[close])
 	if err != nil {
-		return err
+		return nil, err
 	}
-	m.TimeZone = s
+	value.Close = f
 
-	return nil
-}
-
-func (s *TimeSeriesValues) UnmarshalJSON(b []byte) error {
-	values := make(map[string]string)
-	if err := json.Unmarshal(b, &values); err != nil {
-		return err
-	}
-
-	f, err := parseFloat(values, "1. open")
+	i, err := parseInt(s[volume])
 	if err != nil {
-		return err
+		return nil, err
 	}
-	s.Open = f
+	value.Volume = i
 
-	f, err = parseFloat(values, "2. high")
-	if err != nil {
-		return err
-	}
-	s.High = f
-
-	f, err = parseFloat(values, "3. low")
-	if err != nil {
-		return err
-	}
-	s.Low = f
-
-	f, err = parseFloat(values, "4. close")
-	if err != nil {
-		return err
-	}
-	s.Close = f
-
-	i, err := parseInt(values, "5. volume")
-	if err != nil {
-		return err
-	}
-	s.Volume = i
-
-	return nil
+	return value, nil
 }
