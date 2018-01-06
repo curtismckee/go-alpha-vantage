@@ -9,6 +9,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+// TimeSeries specifies a given time series to query for.
+// For valid options, see the TimeSeries* package constants.
 type TimeSeries uint8
 
 const (
@@ -41,7 +43,8 @@ func (t TimeSeries) String() string {
 	return "TimeSeriesUnknown"
 }
 
-func (t TimeSeries) KeyName() string {
+// keyName returns the name of the TimeSeries used for Alpha Vantage API
+func (t TimeSeries) keyName() string {
 	switch t {
 	case timeSeriesIntraday:
 		return "TIME_SERIES_INTRADAY"
@@ -61,6 +64,8 @@ func (t TimeSeries) KeyName() string {
 	return "UNKNOWN"
 }
 
+// TimeInterval specifies a frequency to query for intraday stock data.
+// For valid options, see the TimeInterval* package constants.
 type TimeInterval uint8
 
 const (
@@ -87,7 +92,8 @@ func (t TimeInterval) String() string {
 	return "TimeIntervalUnknown"
 }
 
-func (t TimeInterval) KeyName() string {
+// keyName returns the name of the TimeInterval used for Alpha Vantage API
+func (t TimeInterval) keyName() string {
 	switch t {
 	case TimeIntervalOneMinute:
 		return "1min"
@@ -104,14 +110,16 @@ func (t TimeInterval) KeyName() string {
 }
 
 var (
+	// timeSeriesDateFormats are the expected date formats in time series data
 	timeSeriesDateFormats = []string{
 		"2006-01-02",
 		"2006-01-02 15:04:05",
 	}
 )
 
+// TimeSeriesValue is a piece of data for a given time about stock prices
 type TimeSeriesValue struct {
-	Date   time.Time
+	Time   time.Time
 	Open   float64
 	High   float64
 	Low    float64
@@ -119,13 +127,15 @@ type TimeSeriesValue struct {
 	Volume float64
 }
 
-// sortTimeSeriesValuesByDate allows DailyValues slices to be sorted by date in ascending order
+// sortTimeSeriesValuesByDate allows TimeSeriesValue
+// slices to be sorted by date in ascending order
 type sortTimeSeriesValuesByDate []*TimeSeriesValue
 
 func (b sortTimeSeriesValuesByDate) Len() int           { return len(b) }
-func (b sortTimeSeriesValuesByDate) Less(i, j int) bool { return b[i].Date.Before(b[j].Date) }
+func (b sortTimeSeriesValuesByDate) Less(i, j int) bool { return b[i].Time.Before(b[j].Time) }
 func (b sortTimeSeriesValuesByDate) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
 
+// parseTimeSeriesData will parse csv data from a reader
 func parseTimeSeriesData(r io.Reader) ([]*TimeSeriesValue, error) {
 
 	reader := csv.NewReader(r)
@@ -166,7 +176,9 @@ func parseTimeSeriesData(r io.Reader) ([]*TimeSeriesValue, error) {
 
 }
 
+// parseDigitalCurrencySeriesRecord will parse an individual csv record
 func parseTimeSeriesRecord(s []string) (*TimeSeriesValue, error) {
+	// these are the expected columns in the csv record
 	const (
 		timestamp = iota
 		open
@@ -182,7 +194,7 @@ func parseTimeSeriesRecord(s []string) (*TimeSeriesValue, error) {
 	if err != nil {
 		return nil, errors.Wrapf(err, "error parsing timestamp %s", s[timestamp])
 	}
-	value.Date = d
+	value.Time = d
 
 	f, err := parseFloat(s[open])
 	if err != nil {

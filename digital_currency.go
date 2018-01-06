@@ -10,23 +10,28 @@ import (
 )
 
 const (
+	// digitalCurrencySeriesDateFormat is the format that digital currency time series data comes in
 	digitalCurrencySeriesDateFormat = "2006-01-02 15:04:05"
 )
 
+// DigitalCurrencySeriesValue is a piece of data for a given time about digital currency prices
 type DigitalCurrencySeriesValue struct {
-	Date      time.Time
+	Time time.Time
+	// Price is the recorded in the physical currency specified
 	Price     float64
 	Volume    float64
 	MarketCap float64
 }
 
-// sortDigitalCurrencySeriesValuesByDate allows DailyValues slices to be sorted by date in ascending order
+// sortDigitalCurrencySeriesValuesByDate allows DigitalCurrencySeriesValue
+// slices to be sorted by date in ascending order
 type sortDigitalCurrencySeriesValuesByDate []*DigitalCurrencySeriesValue
 
 func (b sortDigitalCurrencySeriesValuesByDate) Len() int           { return len(b) }
-func (b sortDigitalCurrencySeriesValuesByDate) Less(i, j int) bool { return b[i].Date.Before(b[j].Date) }
+func (b sortDigitalCurrencySeriesValuesByDate) Less(i, j int) bool { return b[i].Time.Before(b[j].Time) }
 func (b sortDigitalCurrencySeriesValuesByDate) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
 
+// parseDigitalCurrencySeriesData will parse csv data from a reader
 func parseDigitalCurrencySeriesData(r io.Reader) ([]*DigitalCurrencySeriesValue, error) {
 
 	reader := csv.NewReader(r)
@@ -67,12 +72,13 @@ func parseDigitalCurrencySeriesData(r io.Reader) ([]*DigitalCurrencySeriesValue,
 
 }
 
+// parseDigitalCurrencySeriesRecord will parse an individual csv record
 func parseDigitalCurrencySeriesRecord(s []string) (*DigitalCurrencySeriesValue, error) {
-	// [timestamp price (USD) price (USD) volume market cap (USD)]
+	// these are the expected columns in the csv record
 	const (
 		timestamp = iota
 		price
-		_
+		_ // price 2 ?? seems to be a duplicate of the first price
 		volume
 		marketCap
 	)
@@ -83,7 +89,7 @@ func parseDigitalCurrencySeriesRecord(s []string) (*DigitalCurrencySeriesValue, 
 	if err != nil {
 		return nil, errors.Wrapf(err, "error parsing timestamp %s", s[timestamp])
 	}
-	value.Date = d
+	value.Time = d
 
 	f, err := parseFloat(s[price])
 	if err != nil {
