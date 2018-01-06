@@ -9,14 +9,11 @@ import (
 	"github.com/kr/pretty"
 )
 
-const (
-	physicalCurrency = "USD"
-)
-
 var (
-	apiKey       = flag.String("apikey", "", "api key for alpha vantage")
-	symbol       = flag.String("symbol", "GOOGL", "symbol to list")
-	cryptoSymbol = flag.String("crypto", "ETH", "crypto-currency to query")
+	apiKey           = flag.String("apikey", "", "api key for alpha vantage")
+	symbol           = flag.String("symbol", "GOOGL", "symbol to list")
+	cryptoSymbol     = flag.String("crypto", "ETH", "crypto-currency to query")
+	physicalCurrency = flag.String("dollars", "USD", "physical currency to query value of crypto")
 )
 
 func main() {
@@ -24,7 +21,7 @@ func main() {
 
 	client := av.NewClient(*apiKey)
 
-	queryCrypto(client, *cryptoSymbol, physicalCurrency)
+	queryCrypto(client, *cryptoSymbol, *physicalCurrency)
 
 	for i := av.TimeIntervalOneMinute; i <= av.TimeIntervalSixtyMinute; i++ {
 		queryInterval(client, *symbol, i)
