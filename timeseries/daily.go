@@ -39,7 +39,7 @@ func SetDailyAdjusted(b bool) dailyOption {
 	}
 }
 
-func Daily(symbol string, apikey string, opts ...dailyOption) (*http.Response, error) {
+func (c *timeSeriesClient) Daily(symbol string, opts ...dailyOption) (*http.Response, error) {
 
 	var adjustedString string
 
@@ -63,7 +63,7 @@ func Daily(symbol string, apikey string, opts ...dailyOption) (*http.Response, e
 		av.AV_BASE_URL,
 		adjustedString,
 		symbol,
-		apikey,
+		c.apikey,
 		defaultOptions.dataType,
 		defaultOptions.outputSize)
 

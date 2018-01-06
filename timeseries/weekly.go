@@ -30,7 +30,7 @@ func SetWeeklyAdjusted(b bool) weeklyOption {
 	}
 }
 
-func Weekly(symbol string, apikey string, opts ...weeklyOption) (*http.Response, error) {
+func (c *timeSeriesClient) Weekly(symbol string, opts ...weeklyOption) (*http.Response, error) {
 
 	var adjustedString string
 
@@ -53,7 +53,7 @@ func Weekly(symbol string, apikey string, opts ...weeklyOption) (*http.Response,
 		av.AV_BASE_URL,
 		adjustedString,
 		symbol,
-		apikey,
+		c.apikey,
 		defaultOptions.dataType)
 
 	resp, err := http.Get(url)

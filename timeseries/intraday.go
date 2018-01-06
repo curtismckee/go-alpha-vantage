@@ -39,7 +39,7 @@ func SetIntradayInterval(s string) intradayOption {
 	}
 }
 
-func Intraday(symbol string, apikey string, opts ...intradayOption) (*http.Response, error) {
+func (c *timeSeriesClient) Intraday(symbol string, opts ...intradayOption) (*http.Response, error) {
 
 	defaultOptions := &intradayConfig{
 		outputSize: "compact",
@@ -54,7 +54,7 @@ func Intraday(symbol string, apikey string, opts ...intradayOption) (*http.Respo
 	url := fmt.Sprintf("%s/query?function=TIME_SERIES_INTRADAY&symbol=%s&apikey=%s&interval=%s&datatype=%s&outputsize=%s",
 		av.AV_BASE_URL,
 		symbol,
-		apikey,
+		c.apikey,
 		defaultOptions.interval,
 		defaultOptions.dataType,
 		defaultOptions.outputSize)

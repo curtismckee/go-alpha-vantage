@@ -30,7 +30,7 @@ func SetMonthlyAdjusted(b bool) monthlyOption {
 	}
 }
 
-func Monthly(symbol string, apikey string, opts ...monthlyOption) (*http.Response, error) {
+func (c *timeSeriesClient) Monthly(symbol string, opts ...monthlyOption) (*http.Response, error) {
 
 	var adjustedString string
 
@@ -53,7 +53,7 @@ func Monthly(symbol string, apikey string, opts ...monthlyOption) (*http.Respons
 		av.AV_BASE_URL,
 		adjustedString,
 		symbol,
-		apikey,
+		c.apikey,
 		defaultOptions.dataType)
 
 	resp, err := http.Get(url)
