@@ -17,11 +17,13 @@ const (
 	queryDataType   = "datatype"
 	queryOutputSize = "outputsize"
 	querySymbol     = "symbol"
+	queryMarket     = "market"
 	queryEndpoint   = "function"
 	queryInterval   = "interval"
 
-	valueCompact = "compact"
-	valueJson    = "csv"
+	valueCompact                  = "compact"
+	valueJson                     = "csv"
+	valueDigitcalCurrencyEndpoint = "DIGITAL_CURRENCY_INTRADAY"
 
 	pathQuery = "query"
 
@@ -95,20 +97,22 @@ func (c *Client) buildRequestPath(params map[string]string) *url.URL {
 	return endpoint
 }
 
+func (c *Client) requestTimeSeries(endpoint *url.URL) ([]*TimeSeriesValue, error) {
+	response, err := c.conn.Request(endpoint)
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+	return parseTimeSeriesData(response.Body)
+}
+
 func (c *Client) StockTimeSeriesIntraday(timeInterval TimeInterval, symbol string) ([]*TimeSeriesValue, error) {
 	endpoint := c.buildRequestPath(map[string]string{
 		queryEndpoint: timeSeriesIntraday.KeyName(),
 		queryInterval: timeInterval.KeyName(),
 		querySymbol:   symbol,
 	})
-
-	response, err := c.conn.Request(endpoint)
-	if err != nil {
-		return nil, err
-	}
-
-	defer response.Body.Close()
-	return parseTimeSeriesData(response.Body)
+	return c.requestTimeSeries(endpoint)
 }
 
 func (c *Client) StockTimeSeries(timeSeries TimeSeries, symbol string) ([]*TimeSeriesValue, error) {
@@ -116,12 +120,19 @@ func (c *Client) StockTimeSeries(timeSeries TimeSeries, symbol string) ([]*TimeS
 		queryEndpoint: timeSeries.KeyName(),
 		querySymbol:   symbol,
 	})
+	return c.requestTimeSeries(endpoint)
+}
 
+func (c *Client) DigitalCurrency(digital, physical string) ([]*DigitalCurrencySeriesValue, error) {
+	endpoint := c.buildRequestPath(map[string]string{
+		queryEndpoint: valueDigitcalCurrencyEndpoint,
+		querySymbol:   digital,
+		queryMarket:   physical,
+	})
 	response, err := c.conn.Request(endpoint)
 	if err != nil {
 		return nil, err
 	}
-
 	defer response.Body.Close()
-	return parseTimeSeriesData(response.Body)
+	return parseDigitalCurrencySeriesData(response.Body)
 }
