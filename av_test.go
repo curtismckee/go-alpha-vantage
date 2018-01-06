@@ -1,8 +1,8 @@
 package av
 
 import (
-	"testing"
 	"net/http"
+	"testing"
 )
 
 func TestNewClient(t *testing.T) {

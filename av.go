@@ -1,8 +1,8 @@
 package av
 
 import (
-	"net/url"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -18,6 +18,7 @@ const (
 	queryOutputSize = "outputsize"
 	querySymbol     = "symbol"
 	queryEndpoint   = "function"
+	queryInterval   = "interval"
 
 	valueCompact = "compact"
 	valueJson    = "csv"
@@ -94,9 +95,25 @@ func (c *Client) buildRequestPath(params map[string]string) *url.URL {
 	return endpoint
 }
 
+func (c *Client) StockTimeSeriesIntraday(timeInterval TimeInterval, symbol string) ([]*TimeSeriesValue, error) {
+	endpoint := c.buildRequestPath(map[string]string{
+		queryEndpoint: timeSeriesIntraday.KeyName(),
+		queryInterval: timeInterval.KeyName(),
+		querySymbol:   symbol,
+	})
+
+	response, err := c.conn.Request(endpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	defer response.Body.Close()
+	return parseTimeSeriesData(response.Body)
+}
+
 func (c *Client) StockTimeSeries(timeSeries TimeSeries, symbol string) ([]*TimeSeriesValue, error) {
 	endpoint := c.buildRequestPath(map[string]string{
-		queryEndpoint: timeSeries.String(),
+		queryEndpoint: timeSeries.KeyName(),
 		querySymbol:   symbol,
 	})
 

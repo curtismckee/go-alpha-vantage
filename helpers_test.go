@@ -1,9 +1,9 @@
 package av
 
 import (
+	"bytes"
 	"net/http"
 	"net/url"
-	"bytes"
 )
 
 const (

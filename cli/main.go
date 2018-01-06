@@ -2,9 +2,10 @@ package main
 
 import (
 	"flag"
-	"github.com/cmckee-dev/go-alpha-vantage"
 	"fmt"
 	"os"
+
+	"github.com/cmckee-dev/go-alpha-vantage"
 )
 
 var (
@@ -17,19 +18,32 @@ func main() {
 
 	client := av.NewClient(*apiKey)
 
-	runStuff(client, *symbol, av.TimeSeriesDaily)
-	runStuff(client, *symbol, av.TimeSeriesWeekly)
-	runStuff(client, *symbol, av.TimeSeriesMonthly)
+	for i := av.TimeIntervalOneMinute; i <= av.TimeIntervalSixtyMinute; i++ {
+		queryInterval(client, *symbol, i)
+	}
+	for t := av.TimeSeriesDaily; t <= av.TimeSeriesMonthlyAdjusted; t++ {
+		queryTimeSeries(client, *symbol, t)
+	}
 }
 
-func runStuff(client *av.Client, symbol string, series av.TimeSeries) {
+func queryTimeSeries(client *av.Client, symbol string, series av.TimeSeries) {
 	res, err := client.StockTimeSeries(series, symbol)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "error loading series %s: %v", series, err)
+		ErrorF("error loading series %s: %v", series, err)
+		return
 	}
+	fmt.Printf("%s %s with %d records\n", series, symbol, len(res))
+}
 
-	fmt.Printf("%s %s\n", series, symbol)
-	for _, record := range res {
-		fmt.Printf("%s: high=%f low=%f\n", record.Date, record.High, record.Low)
+func queryInterval(client *av.Client, symbol string, timeInterval av.TimeInterval) {
+	res, err := client.StockTimeSeriesIntraday(timeInterval, symbol)
+	if err != nil {
+		ErrorF("error loading intraday series %s: %v", timeInterval, err)
+		return
 	}
+	fmt.Printf("%s %s with %d records\n", timeInterval, symbol, len(res))
+}
+
+func ErrorF(format string, args ...interface{}) {
+	fmt.Fprintf(os.Stderr, fmt.Sprintf("%s\n", format), args...)
 }
