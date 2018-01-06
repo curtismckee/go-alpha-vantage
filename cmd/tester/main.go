@@ -4,9 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"sync"
 
 	"github.com/cmckee-dev/go-alpha-vantage"
-	"github.com/kr/pretty"
 )
 
 var (
@@ -21,15 +21,31 @@ func main() {
 
 	client := av.NewClient(*apiKey)
 
-	queryCrypto(client, *cryptoSymbol, *physicalCurrency)
+	wg := &sync.WaitGroup{}
 
-	for i := av.TimeIntervalOneMinute; i <= av.TimeIntervalSixtyMinute; i++ {
-		queryInterval(client, *symbol, i)
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		queryCrypto(client, *cryptoSymbol, *physicalCurrency)
+	}()
+
+	for interval := av.TimeIntervalOneMinute; interval <= av.TimeIntervalSixtyMinute; interval++ {
+		wg.Add(1)
+		go func(interval av.TimeInterval) {
+			defer wg.Done()
+			queryInterval(client, *symbol, interval)
+		}(interval)
 	}
 
-	for t := av.TimeSeriesDaily; t <= av.TimeSeriesMonthlyAdjusted; t++ {
-		queryTimeSeries(client, *symbol, t)
+	for series := av.TimeSeriesDaily; series <= av.TimeSeriesMonthlyAdjusted; series++ {
+		wg.Add(1)
+		go func(series av.TimeSeries) {
+			defer wg.Done()
+			queryTimeSeries(client, *symbol, series)
+		}(series)
 	}
+
+	wg.Wait()
 }
 
 func queryTimeSeries(client *av.Client, symbol string, series av.TimeSeries) {
@@ -55,9 +71,6 @@ func queryCrypto(client *av.Client, digital, physical string) {
 	if err != nil {
 		ErrorF("error loading crypto: %s => %s: %v", digital, physical, err)
 		return
-	}
-	for _, record := range res {
-		pretty.Println(record)
 	}
 	fmt.Printf("%s => %s with %d records\n", digital, physical, len(res))
 }

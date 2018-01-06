@@ -20,7 +20,7 @@ const (
 	TimeSeriesWeeklyAdjusted
 	TimeSeriesMonthly
 	TimeSeriesMonthlyAdjusted
-	timeSeriesIntraday
+	timeSeriesIntraday // intentionally not exported
 )
 
 func (t TimeSeries) String() string {
