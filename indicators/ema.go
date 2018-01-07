@@ -7,12 +7,12 @@ import (
 	"github.com/cmckee-dev/go-alpha-vantage/av"
 )
 
-func EMA(symbol string, apikey string, interval string, timePeriod string, seriesType string) (*http.Response, error) {
+func (c *indicatorClient) EMA(symbol string, interval string, timePeriod string, seriesType string) (*http.Response, error) {
 
 	url := fmt.Sprintf("%s/query?function=EMA&symbol=%s&apikey=%s&interval=%s&time_period=%s&series_type=%s",
 		av.AV_BASE_URL,
 		symbol,
-		apikey,
+		c.apikey,
 		interval,
 		timePeriod,
 		seriesType)
