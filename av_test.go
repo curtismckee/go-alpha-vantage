@@ -29,6 +29,60 @@ func TestClient_StockTimeSeries_buildsUrl(t *testing.T) {
 	}
 }
 
+func TestClient_StockTimeSeries_buildsUrlWithFullOutputSize(t *testing.T) {
+	const (
+		expected = "query?apikey=test&datatype=csv&function=TIME_SERIES_DAILY&outputsize=full&symbol=TEST"
+	)
+	res := &http.Response{
+		Body:       NewBuffCloser(sampleTimeSeriesData),
+		StatusCode: http.StatusOK,
+	}
+	conn := NewResponseConnection(res)
+	client := NewClientConnection(testApiKey, conn)
+
+	client.StockTimeSeries(TimeSeriesDaily, "TEST", Full)
+
+	if conn.endpoint.String() != expected {
+		t.Errorf("unexpected url, want %s got %s", expected, conn.endpoint.String())
+	}
+}
+
+func TestClient_StockTimeSeries_buildsUrlWithUnknownOutputSize(t *testing.T) {
+	const (
+		expected = "query?apikey=test&datatype=csv&function=TIME_SERIES_DAILY&outputsize=compact&symbol=TEST"
+	)
+	res := &http.Response{
+		Body:       NewBuffCloser(sampleTimeSeriesData),
+		StatusCode: http.StatusOK,
+	}
+	conn := NewResponseConnection(res)
+	client := NewClientConnection(testApiKey, conn)
+
+	client.StockTimeSeries(TimeSeriesDaily, "TEST", 5)
+
+	if conn.endpoint.String() != expected {
+		t.Errorf("unexpected url, want %s got %s", expected, conn.endpoint.String())
+	}
+}
+
+func TestClient_StockTimeSeries_buildsUrlWithTooManyOutputSizeParams(t *testing.T) {
+	const (
+		expected = "query?apikey=test&datatype=csv&function=TIME_SERIES_DAILY&outputsize=full&symbol=TEST"
+	)
+	res := &http.Response{
+		Body:       NewBuffCloser(sampleTimeSeriesData),
+		StatusCode: http.StatusOK,
+	}
+	conn := NewResponseConnection(res)
+	client := NewClientConnection(testApiKey, conn)
+
+	client.StockTimeSeries(TimeSeriesDaily, "TEST", Full, Compact)
+
+	if conn.endpoint.String() != expected {
+		t.Errorf("unexpected url, want %s got %s", expected, conn.endpoint.String())
+	}
+}
+
 func TestClient_StockTimeSeries_getsResults(t *testing.T) {
 	res := &http.Response{
 		Body:       NewBuffCloser(sampleTimeSeriesData),
