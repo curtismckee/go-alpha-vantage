@@ -28,7 +28,7 @@ type QuoteValue struct {
 	High          float64
 	Low           float64
 	Price         float64
-	Volume        float64
+	Volume        int
 	LatestDay     time.Time
 	PreviousClose float64
 	Change        float64
@@ -110,11 +110,11 @@ func parseQuoteRecord(s []string) (*QuoteValue, error) {
 	}
 	value.Price = f
 
-	f, err = parseFloat(s[volume])
+	i, err := parseInt(s[volume])
 	if err != nil {
 		return nil, errors.Wrapf(err, "error parsing volume %s", s[volume])
 	}
-	value.Volume = f
+	value.Volume = i
 
 	d, err := parseDate(s[latestDay], timeSeriesDateFormats...)
 	if err != nil {
