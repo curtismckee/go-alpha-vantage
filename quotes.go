@@ -2,7 +2,6 @@ package av
 
 import (
 	"encoding/csv"
-	"fmt"
 	"github.com/pkg/errors"
 	"io"
 	"time"
@@ -58,7 +57,6 @@ func parseQuoteData(r io.Reader) (*QuoteValue, error) {
 			}
 			return nil, err
 		}
-		fmt.Println("Record is:", record)
 		value, err := parseQuoteRecord(record)
 		if err != nil {
 			return nil, err
