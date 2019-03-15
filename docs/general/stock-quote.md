@@ -1,16 +1,16 @@
 <center>
-  <h1>Quotes</h1>
+  <h1>Stock Quote</h1>
 </center>
-
-##### Quick API Reference:
 
 <!-- tabs:start -->
 
-### **Endpoint**
+### **Client**
+
+Coming Soon!
+
+### **API Reference**
 
 A lightweight alternative to the time series APIs, this service returns the latest price and volume information for a security of your choice.
-
-> GET `https://alphavantage.co/query?function=GLOBAL_QUOTE`
 
 | Parameter         | Object  | Required  | Description |
 | :---              | :---:   | :---:     | :---        |
@@ -19,12 +19,11 @@ A lightweight alternative to the time series APIs, this service returns the late
 | datatype          | string  | optional  | By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the quote data in JSON format; `csv` returns the quote data as a CSV (comma separated value) file. |
 | apikey          | string  | true      | Your API key | 
 
-Example (Click for JSON output):  
+Example JSON Endpoint:  
+
 [https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=MSFT&apikey=demo](https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=MSFT&apikey=demo)
 
-### **Response**
-
-> http code: 200
+Example Response:  
 
 ```javascript
 {
@@ -40,14 +39,6 @@ Example (Click for JSON output):
     "09. change": "-0.9200",
     "10. change percent": "-0.8541%"
   }
-}
-```
-
-> http code: 404
-
-```javascript
-{
-    "Error Message": "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."
 }
 ```
 

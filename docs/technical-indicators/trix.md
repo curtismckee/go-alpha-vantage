@@ -1,68 +1,65 @@
-# TRIX
+<center>
+  <h1>Technical Indicator - 1 Day Rate of Change of Triple Smooth Exponential Moving Average</h1>
+</center>
 
-{% api-method method="get" host="https://api.cakes.com" path="/v1/cakes/:id" %}
-{% api-method-summary %}
-Get Cakes
-{% endapi-method-summary %}
+<!-- tabs:start -->
 
-{% api-method-description %}
-This endpoint allows you to get free cakes.
-{% endapi-method-description %}
+### **Client**
 
-{% api-method-spec %}
-{% api-method-request %}
-{% api-method-path-parameters %}
-{% api-method-parameter name="id" type="string" %}
-ID of the cake to get, for free of course.
-{% endapi-method-parameter %}
-{% endapi-method-path-parameters %}
+Coming Soon!
 
-{% api-method-headers %}
-{% api-method-parameter name="Authentication" type="string" required=true %}
-Authentication token to track down who is emptying our stocks.
-{% endapi-method-parameter %}
-{% endapi-method-headers %}
+### **API Reference**
 
-{% api-method-query-parameters %}
-{% api-method-parameter name="recipe" type="string" %}
-The API will do its best to find a cake matching the provided recipe.
-{% endapi-method-parameter %}
+This API returns the 1-day rate of change of a triple smooth exponential moving average (TRIX) values. See also: [Investopedia article](https://www.investopedia.com/articles/technical/02/092402.asp) and [mathematical reference](https://www.fmlabs.com/reference/default.htm?url=TRIX.htm)
 
-{% api-method-parameter name="gluten" type="boolean" %}
-Whether the cake should be gluten-free or not.
-{% endapi-method-parameter %}
-{% endapi-method-query-parameters %}
-{% endapi-method-request %}
 
-{% api-method-response %}
-{% api-method-response-example httpCode=200 %}
-{% api-method-response-example-description %}
-Cake successfully retrieved.
-{% endapi-method-response-example-description %}
+| Parameter       | Object  | Required  | Description |
+| :---            | :---:   | :---:     | :---        |
+| function        | string  | true      | The technical indicator of your choice. In this case, `function=TRIX` |
+| symbol          | string  | true      | The name of the security of your choice. The example: `symbol=MSFT` |
+| interval        | string  | true      | Time interval between two consecutive data points in the time series. The following calues are supported: `1min`, `5min`, `15min`, `30min`, `60min`, `daily`, `weekly`, `monthly` |
+| time\_period    | string  | true      | Number of data points used to calculate each TRIX value. Positive integers are accepted (e.g., `time_period=60`, `time_period=200`) |
+| series\_type    | string  | true      | The desired price type in the time series. Four types are supported: `close`, `open`, `high`, `low` |
+| datatype        | string  | optional  | By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the daily time series in JSON format; `csv` returns the time seris as a CSV (comma spearated value) file. |
+| apikey          | string  | true      | Your API key | 
+
+Example JSON Endpoint:  
+
+
+[https://www.alphavantage.co/query?function=TRIX&symbol=MSFT&interval=daily&time_period=10&series_type=close&apikey=demo](https://www.alphavantage.co/query?function=TRIX&symbol=MSFT&interval=daily&time_period=10&series_type=close&apikey=demo)
+
+
+Example Response:  
 
 ```javascript
 {
-    "name": "Cake's name",
-    "recipe": "Cake's recipe name",
-    "cake": "Binary cake"
+  "Meta Data": {
+    "1: Symbol": "MSFT",
+    "2: Indicator": "1-day Rate-Of-Change (ROC) of a Triple Smooth EMA (TRIX)",
+    "3: Last Refreshed": "2019-03-13",
+    "4: Interval": "daily",
+    "5: Time Period": 10,
+    "6: Series Type": "close",
+    "7: Time Zone": "US/Eastern Time"
+  },
+  "Technical Analysis: TRIX": {
+    "2019-03-13": {
+      "TRIX": "0.2517"
+    },
+    "2019-03-12": {
+      "TRIX": "0.2493"
+    },
+    "2019-03-11": {
+      "TRIX": "0.2561"
+    },
+    "2019-03-08": {
+      "TRIX": "0.2725"
+    },
+    { ... },
+    { ... },
+    { ... },
+  }
 }
 ```
-{% endapi-method-response-example %}
 
-{% api-method-response-example httpCode=404 %}
-{% api-method-response-example-description %}
-Could not find a cake matching this query.
-{% endapi-method-response-example-description %}
-
-```javascript
-{
-    "message": "Ain't no cake like that."
-}
-```
-{% endapi-method-response-example %}
-{% endapi-method-response %}
-{% endapi-method-spec %}
-{% endapi-method %}
-
-
-
+<!-- tabs:end -->

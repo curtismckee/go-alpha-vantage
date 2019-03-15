@@ -1,44 +1,30 @@
-# Cryptocurrencies Monthly
+<center>
+  <h1>Crypto Currencies - Monthly</h1>
+</center>
 
-{% api-method method="get" host="https://alphavantage.co" path="/query?" %}
-{% api-method-summary %}
-Cryptocurrencies Monthly
-{% endapi-method-summary %}
+<!-- tabs:start -->
 
-{% api-method-description %}
-This API returns the monthly historical time series for a digital currency (e.g. BTC) traded on a specific market (e.g. CNY/Chinese Yuan), refreshed daily at midnight (UTC). Prices and volumes are quoted in both the market-specific currency and USD.
-{% endapi-method-description %}
+### **Cient**
 
-{% api-method-spec %}
-{% api-method-request %}
+Coming Soon!
 
-{% api-method-query-parameters %}
-{% api-method-parameter name="function" type="string" required=true %}
-The time series of your choice. In this case, `function=DIGITAL_CURRENCY_MONTHLY`
-{% endapi-method-parameter %}
+### **API Reference**
 
-{% api-method-parameter name="symbol" type="string" required=true %}
-This digital/crypto currency of your choice. It can be any of the currencies in the digital currency list. For example: `symbol=BTC`
-{% endapi-method-parameter %}
+This API returns the monthly historical time series for a digital currency (e.g. BTC) traded on a specific market (e.g. CNY/Chinese Yuan), refreshed daily at midnight (UTC).  
+Prices and volumes are quoted in both the market-specific currency and USD.
 
-{% api-method-parameter name="market" type="string" required=true %}
-The exchange market of your choice. It can be any of the market in the market list. For example: `market=CNY`.
-{% endapi-method-parameter %}
+| Parameter       | Object  | Required  | Description |
+| :---            | :---:   | :---:     | :---        |
+| function        | string  | true      | The function of your choice. In this case, `function=DIGITAL_CURRENCY_MONTHLY` |
+| symbol          | string  | true      | The digital/crypto currency of your choice. It can be any of the currencies in the digital currency list. For example: `symbol=BTC`. |
+| market          | string  | true      | The exchange market of your choice. It can be any of the market in the market list. For example: `market=CNY`. |
+| apikey          | string  | true      | Your API key | 
 
-{% api-method-parameter name="apikey" type="string" required=true %}
-Your API key.
-{% endapi-method-parameter %}
+Example JSON Endpoint:  
 
-{% endapi-method-query-parameters %}
-{% endapi-method-request %}
+[https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_MONTHLY&symbol=BTC&market=CNY&apikey=demo](https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_MONTHLY&symbol=BTC&market=CNY&apikey=demo)
 
-
-{% api-method-response %}
-
-{% api-method-response-example httpCode=200 %}
-{% api-method-response-example-description %}
-Success
-{% endapi-method-response-example-description %}
+Example Response:  
 
 ```javascript
 {
@@ -71,19 +57,5 @@ Success
 }
 
 ```
-{% endapi-method-response-example %}
 
-{% api-method-response-example httpCode=404 %}
-{% api-method-response-example-description %}
-Invalid API Call Error Message. Note: The http status code actually returns 200 with the error message.
-{% endapi-method-response-example-description %}
-
-```javascript
-{
-    "Error Message": "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for DIGITAL_CURRENCY_MONTHLY."
-}
-```
-{% endapi-method-response-example %}
-{% endapi-method-response %}
-{% endapi-method-spec %}
-{% endapi-method %}
+<!-- tabs:end -->

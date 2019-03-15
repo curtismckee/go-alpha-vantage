@@ -1,8 +1,10 @@
 - General
-  - [Exchange Rates](general/currency-exchange-rates.md)
-  - [Search Endpoint](general/search-endpoint.md)
-- Stock Time-Series
-  - [Quote](stock-time-series/quote-endpoint.md)
+  - [Exchange Rates](general/exchange-rates.md)
+  - [Search](general/search.md)
+  - [Sector Preformances](general/sector-performance.md)
+  - [Stock Quote](general/stock-quote.md)
+
+- Time Series
   - [Intraday](stock-time-series/intraday.md)
   - [Daily](stock-time-series/daily.md)
   - [Daily Adjusted](stock-time-series/daily-adjusted.md)
@@ -10,7 +12,8 @@
   - [Weekly Adjusted](stock-time-series/weekly-adjusted.md)
   - [Monthly](stock-time-series/monthly.md)
   - [Monthly Adjusted](stock-time-series/monthly-adjusted.md)
-- Forex (FX)
+
+- Forex
   - [Intraday](forex-fx/intraday.md)
   - [Daily](forex-fx/daily.md)
   - [Weekly](forex-fx/weekly.md)
@@ -38,7 +41,7 @@
   - [RSI](technical-indicators/rsi.md)
   - [STOCHRSI](technical-indicators/stochrsi.md)
   - [WILLR](technical-indicators/willr.md)
-  - [ADX](technical-indicators/adx.md)
+  - [ADX](technical-indicators/adx.md)  
   - [ADXR](technical-indicators/adxr.md)
   - [APO](technical-indicators/apo.md)
   - [PPO](technical-indicators/ppo.md)
@@ -74,6 +77,3 @@
   - [HT\_DCPERIOD](technical-indicators/ht_dcperiod.md)
   - [HT\_DCPHASE](technical-indicators/ht_dcphase.md)
   - [HT\_PHASOR](technical-indicators/ht_phasor.md)
-
-- Sector Performances
-  - [Sector](sector-performances/sector.md)

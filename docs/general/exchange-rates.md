@@ -1,16 +1,15 @@
 <center>
-  <h1>Currency Exchange Rates</h1>
+  <h1>Exchange Rates</h1>
 </center>
 
-##### Quick API Reference:
-
 <!-- tabs:start -->
+### **Client**
 
-### ** Endpoint **
+Coming Soon!
+
+### **API Reference**
 
 This API returns the realtime exchange rate for any pair of digital currency (e.g. Bitcoin) or physical currency (e.g. USD). 
-
-> GET `https://alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE`
 
 | Parameter       | Object  | Required  | Description |
 | :---            | :---:   | :---:     | :---        |
@@ -19,13 +18,11 @@ This API returns the realtime exchange rate for any pair of digital currency (e.
 | to\_currency    | string  | true      | The destination currency for the exchange rate. It can either be a physical currency or digital/crypto currency. For example: `to_currency=USD` or `to_currency=BTC` |
 | apikey          | string  | true      | Your API key | 
 
-Example (Click for JSON output):  
+Example JSON Endpoint:  
+
 [https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=CNY&apikey=demo](https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=CNY&apikey=demo)
 
-
-### **Response**
-
-> http code: `200`  
+Example Response:
 
 ```javascript
 {
@@ -40,13 +37,4 @@ Example (Click for JSON output):
   }
 }
 ```
-
-> http code: `404`
-
-```javascript
-{
-  "Error Message": "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for CURRENCY_EXCHANGE_RATE."
-}
-```
-
 <!-- tabs:end -->

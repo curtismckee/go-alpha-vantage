@@ -1,68 +1,68 @@
-# MAMA
+<center>
+  <h1>Technical Indicators - MESA Adaptive Moving Average</h1>
+</center>
 
-{% api-method method="get" host="https://api.cakes.com" path="/v1/cakes/:id" %}
-{% api-method-summary %}
-Get Cakes
-{% endapi-method-summary %}
+<!-- tabs:start -->
 
-{% api-method-description %}
-This endpoint allows you to get free cakes.
-{% endapi-method-description %}
+### **Client**
 
-{% api-method-spec %}
-{% api-method-request %}
-{% api-method-path-parameters %}
-{% api-method-parameter name="id" type="string" %}
-ID of the cake to get, for free of course.
-{% endapi-method-parameter %}
-{% endapi-method-path-parameters %}
+Coming Soon!
 
-{% api-method-headers %}
-{% api-method-parameter name="Authentication" type="string" required=true %}
-Authentication token to track down who is emptying our stocks.
-{% endapi-method-parameter %}
-{% endapi-method-headers %}
+### **API Reference**
 
-{% api-method-query-parameters %}
-{% api-method-parameter name="recipe" type="string" %}
-The API will do its best to find a cake matching the provided recipe.
-{% endapi-method-parameter %}
+This API returns the MESA adaptive moving average (MAMA) values.
 
-{% api-method-parameter name="gluten" type="boolean" %}
-Whether the cake should be gluten-free or not.
-{% endapi-method-parameter %}
-{% endapi-method-query-parameters %}
-{% endapi-method-request %}
+| Parameter       | Object  | Required  | Description |
+| :---            | :---:   | :---:     | :---        |
+| function        | string  | true      | The technical indicator of your choice. In this case, `function=MAMA` |
+| symbol          | string  | true      | The name of the security of your choice. The example: `symbol=MSFT` |
+| interval        | string  | true      | Time interval between two consecutive data points in the time series. The following calues are supported: `1min`, `5min`, `15min`, `30min`, `60min`, `weekly`, `monthly` |
+| series\_type    | string  | true      | The desired price type in the time series. Four types are supported: `close`, `open`, `high`, `low` |
+| fastlimit       | string  | optional  | Positive floats are accepted. By default, `fastlimit=0.01`. |
+| slowlimit       | string  | optional  | Positive floats are accepted. By default, `slowlimit=0.01`. |
+| datatype        | string  | optional  | By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the daily times series in JSON format; `csv` returns the time seris as a CSV (comma spearated value) file. |
+| apikey          | string  | true      | Your API key | 
 
-{% api-method-response %}
-{% api-method-response-example httpCode=200 %}
-{% api-method-response-example-description %}
-Cake successfully retrieved.
-{% endapi-method-response-example-description %}
+Example JSON Endpoint:  
+
+[https://www.alphavantage.co/query?function=MAMA&symbol=MSFT&interval=daily&series_type=close&fastlimit=0.02&apikey=demo](https://www.alphavantage.co/query?function=MAMA&symbol=MSFT&interval=daily&series_type=close&fastlimit=0.02&apikey=demo)
+
+Example Response:  
 
 ```javascript
 {
-    "name": "Cake's name",
-    "recipe": "Cake's recipe name",
-    "cake": "Binary cake"
+  Meta Data": {
+    "1: Symbol": "MSFT",
+    "2: Indicator": "MESA Adaptive Moving Average (MAMA)",
+    "3: Last Refreshed": "2019-03-12 12:40:49",
+    "4: Interval": "daily",
+    "5.1: Fast Limit": 0.02,
+    "5.2: Slow Limit": 0.01,
+    "6: Series Type": "close",
+    "7: Time Zone": "US/Eastern Time"
+  },
+  "Technical Analysis: MAMA": {
+    "2019-03-12 12:40:49": {
+      "MAMA": "105.7240",
+      "FAMA": "94.0432"
+    },
+    "2019-03-11": {
+      "MAMA": "105.5571",
+      "FAMA": "93.9252"
+    },
+    "2019-03-08": {
+      "MAMA": "105.4837",
+      "FAMA": "93.8668"
+    },
+    "2019-03-07": {
+      "MAMA": "105.4329",
+      "FAMA": "93.8084"
+    },
+    { ... },
+    { ... },
+    { ... },
+  }
 }
 ```
-{% endapi-method-response-example %}
 
-{% api-method-response-example httpCode=404 %}
-{% api-method-response-example-description %}
-Could not find a cake matching this query.
-{% endapi-method-response-example-description %}
-
-```javascript
-{
-    "message": "Ain't no cake like that."
-}
-```
-{% endapi-method-response-example %}
-{% endapi-method-response %}
-{% endapi-method-spec %}
-{% endapi-method %}
-
-
-
+<!-- tabs:end -->

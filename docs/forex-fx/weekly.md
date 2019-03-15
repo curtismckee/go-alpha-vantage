@@ -1,48 +1,31 @@
-# FX\_WEEKLY
+<center>
+  <h1>Forex - Weekly</h1>
+</center>
 
-{% api-method method="get" host="https://alphavantage.co" path="/query?" %}
-{% api-method-summary %}
-Forex (FX) Weekly
-{% endapi-method-summary %}
+<!-- tabs:start -->
 
-{% api-method-description %}
-This API returns the weekly time series (timestamp, open, high, low, close) of the FX currency pair specified, updated realtime. 
+### **Client**
+
+Coming Soon!
+
+### **API Reference**
+
+This API returns the weekly time series (timestamp, open, high, low, close) of the FX currency pair specified, updated realtime.  
 The latest data point is the cumulative price information for the week (or partial week) containing the current trading day, updated realtime. 
-{% endapi-method-description %}
 
-{% api-method-spec %}
-{% api-method-request %}
+| Parameter       | Object  | Required  | Description |
+| :---            | :---:   | :---:     | :---        |
+| function        | string  | true      | The function of your choice. In this case, `function=FX_WEEKLY` |
+| to\_symbol      | string  | true      | A three-letter symbol from the forex currency list. For example: `from_symbol=EUR`. |
+| from\_symbol    | string  | true      | A three-letter symbol from the forex currency list. For example: `from_symbol=USD`. |
+| datatype        | string  | true      | By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the weekly time series in JSON format; `csv` returns the time series as a CSV (comma separated value) file. |
+| apikey          | string  | true      | Your API key | 
 
-{% api-method-query-parameters %}
-{% api-method-parameter name="function" type="string" required=true %}
-The time series of your choice. In this case, `function=TIME_SERIES_WEEKLY`
-{% endapi-method-parameter %}
+Example JSON Endpoint:  
 
-{% api-method-parameter name="from\_symbol" type="string" required=true %}
-A three-letter symbol from the forex currency list. For example: `from_symbol=EUR`
-{% endapi-method-parameter %}
+[https://www.alphavantage.co/query?function=FX_WEEKLY&from_symbol=EUR&to_symbol=USD&apikey=demo](https://www.alphavantage.co/query?function=FX_WEEKLY&from_symbol=EUR&to_symbol=USD&apikey=demo)
 
-{% api-method-parameter name="to\_symbol" type="string" required=true %}
-A three-letter symbol from the forex currency list. For example: `to_symbol=USD`
-{% endapi-method-parameter %}
-
-{% api-method-parameter name="datatype" type="string" %}
-By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the weekly time series in JSON format; `csv` returns the time series as a CSV (comma separated value) file. 
-{% endapi-method-parameter %}
-
-{% api-method-parameter name="apikey" type="string" required=true %}
-Your API key.
-{% endapi-method-parameter %}
-
-{% endapi-method-query-parameters %}
-{% endapi-method-request %}
-
-
-{% api-method-response %}
-{% api-method-response-example httpCode=200 %}
-{% api-method-response-example-description %}
-Success
-{% endapi-method-response-example-description %}
+Example Response:  
 
 ```javascript
 {
@@ -66,22 +49,5 @@ Success
   }
 }
 ```
-{% endapi-method-response-example %}
 
-{% api-method-response-example httpCode=404 %}
-{% api-method-response-example-description %}
-Invalid API Call Error Message.
-{% endapi-method-response-example-description %}
-
-```javascript
-{
-    "Error Message": "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for FX_WEEKLY."
-}
-```
-{% endapi-method-response-example %}
-{% endapi-method-response %}
-{% endapi-method-spec %}
-{% endapi-method %}
-
-
-
+<!-- tabs:end -->

@@ -1,68 +1,69 @@
-# APO
+<center>
+  <h1>Technical Indicator - Absolute Price Line</h1>
+</center>
 
-{% api-method method="get" host="https://api.cakes.com" path="/v1/cakes/:id" %}
-{% api-method-summary %}
-Get Cakes
-{% endapi-method-summary %}
+<!-- tabs:start -->
 
-{% api-method-description %}
-This endpoint allows you to get free cakes.
-{% endapi-method-description %}
+### **Client**
 
-{% api-method-spec %}
-{% api-method-request %}
-{% api-method-path-parameters %}
-{% api-method-parameter name="id" type="string" %}
-ID of the cake to get, for free of course.
-{% endapi-method-parameter %}
-{% endapi-method-path-parameters %}
+Coming Soon!
 
-{% api-method-headers %}
-{% api-method-parameter name="Authentication" type="string" required=true %}
-Authentication token to track down who is emptying our stocks.
-{% endapi-method-parameter %}
-{% endapi-method-headers %}
+### **API Reference**
 
-{% api-method-query-parameters %}
-{% api-method-parameter name="recipe" type="string" %}
-The API will do its best to find a cake matching the provided recipe.
-{% endapi-method-parameter %}
+This API returns the absolute price oscillator (APO) values. See also: [mathematical reference](https://www.fmlabs.com/reference/default.htm?url=PriceOscillator.htm)
 
-{% api-method-parameter name="gluten" type="boolean" %}
-Whether the cake should be gluten-free or not.
-{% endapi-method-parameter %}
-{% endapi-method-query-parameters %}
-{% endapi-method-request %}
+| Parameter       | Object  | Required  | Description |
+| :---            | :---:   | :---:     | :---        |
+| function        | string  | true      | The technical indicator of your choice. In this case, `function=APO` |
+| symbol          | string  | true      | The name of the security of your choice. The example: `symbol=MSFT` |
+| interval        | string  | true      | Time interval between two consecutive data points in the time series. The following calues are supported: `1min`, `5min`, `15min`, `30min`, `60min`, `daily`, `weekly`, `monthly` |
+| series\_type    | string  | true      | The desired price type in the time series. Four types are supported: `close`, `open`, `high`, `low` |
+| fastperiod      | string  | optional  | Positive integers are accepted. By default, `fastperiod=12`. |
+| slowperiod      | string  | optional  | Positive integers are accepted. By default, `slowperiod=26`. |
+| matype          | string  | optional  | Moving average type. By default, `matype=0`. Integers 0 - 8 are accepted with the following mappings. 0 = Simple Moving Average (SMA), 1 = Exponential Moving Average (EMA), 2 = Weighted Moving Average (WMA), 3 = Double Exponential Moving Average (DEMA), 4 = Triple Exponential Moving Average (TEMA), 5 = Triangular Moving Average (TRIMA), 6 = T3 Moving Average, 7 = Kaufman Adaptive Moving Average (KAMA), 8 = MESA Adaptive Moving Average (MAMA). |
+| datatype        | string  | optional  | By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the daily time series in JSON format; `csv` returns the time seris as a CSV (comma spearated value) file. |
+| apikey          | string  | true      | Your API key | 
 
-{% api-method-response %}
-{% api-method-response-example httpCode=200 %}
-{% api-method-response-example-description %}
-Cake successfully retrieved.
-{% endapi-method-response-example-description %}
+
+Example JSON Endpoint:  
+
+
+[https://www.alphavantage.co/query?function=APO&symbol=MSFT&interval=daily&series_type=close&fastperiod=10&matype=1&apikey=demo](https://www.alphavantage.co/query?function=APO&symbol=MSFT&interval=daily&series_type=close&fastperiod=10&matype=1&apikey=demo)
+
+
+Example Response:  
 
 ```javascript
 {
-    "name": "Cake's name",
-    "recipe": "Cake's recipe name",
-    "cake": "Binary cake"
+  "Meta Data": {
+    "1: Symbol": "MSFT",
+    "2: Indicator": "Absolute Price Oscillator (APO)",
+    "3: Last Refreshed": "2019-03-13 16:00:01",
+    "4: Interval": "daily",
+    "5.1: Fast Period": 10,
+    "5.2: Slow Period": 26,
+    "5.3: MA Type": 1,
+    "6: Series Type": "close",
+    "7: Time Zone": "US/Eastern Time"
+  },
+  "Technical Analysis: APO": {
+    "2019-03-13 16:00:01": {
+      "APO": "2.0631"
+    },
+    "2019-03-12": {
+      "APO": "1.9045"
+    },
+    "2019-03-11": {
+      "APO": "1.7864"
+    },
+    "2019-03-08": {
+      "APO": "1.7111"
+    },
+    { ... },
+    { ... },
+    { ... },
+  }
 }
 ```
-{% endapi-method-response-example %}
 
-{% api-method-response-example httpCode=404 %}
-{% api-method-response-example-description %}
-Could not find a cake matching this query.
-{% endapi-method-response-example-description %}
-
-```javascript
-{
-    "message": "Ain't no cake like that."
-}
-```
-{% endapi-method-response-example %}
-{% endapi-method-response %}
-{% endapi-method-spec %}
-{% endapi-method %}
-
-
-
+<!-- tabs:end -->

@@ -1,68 +1,66 @@
-# TEMA
+<center>
+  <h1>Technical Indicators - Triple Exponential Moving Average</h1>
+</center>
 
-{% api-method method="get" host="https://api.cakes.com" path="/v1/cakes/:id" %}
-{% api-method-summary %}
-Get Cakes
-{% endapi-method-summary %}
+<!-- tabs:start -->
 
-{% api-method-description %}
-This endpoint allows you to get free cakes.
-{% endapi-method-description %}
+### **Client**
 
-{% api-method-spec %}
-{% api-method-request %}
-{% api-method-path-parameters %}
-{% api-method-parameter name="id" type="string" %}
-ID of the cake to get, for free of course.
-{% endapi-method-parameter %}
-{% endapi-method-path-parameters %}
+Coming Soon!
 
-{% api-method-headers %}
-{% api-method-parameter name="Authentication" type="string" required=true %}
-Authentication token to track down who is emptying our stocks.
-{% endapi-method-parameter %}
-{% endapi-method-headers %}
+### **API Reference**
 
-{% api-method-query-parameters %}
-{% api-method-parameter name="recipe" type="string" %}
-The API will do its best to find a cake matching the provided recipe.
-{% endapi-method-parameter %}
 
-{% api-method-parameter name="gluten" type="boolean" %}
-Whether the cake should be gluten-free or not.
-{% endapi-method-parameter %}
-{% endapi-method-query-parameters %}
-{% endapi-method-request %}
+This API returns the triple exponential moving average (TEMA) values. See also: [mathematical reference](https://www.fmlabs.com/reference/default.htm?url=TEMA.htm)
 
-{% api-method-response %}
-{% api-method-response-example httpCode=200 %}
-{% api-method-response-example-description %}
-Cake successfully retrieved.
-{% endapi-method-response-example-description %}
+
+| Parameter       | Object  | Required  | Description |
+| :---            | :---:   | :---:     | :---        |
+| function        | string  | true      | The technical indicators of your choice. In this case, `function=TEMA` |
+| symbol          | string  | true      | The name of the security of your choice. The example: `symbol=MSFT` |
+| interval        | string  | true      | Time interval between two consecutive data points in the time series. The following calues are supported: `1min`, `5min`, `15min`, `30min`, `60min`, `weekly`, `monthly` |
+| time\_period    | string  | true      | Number of data points used to calculate each moving average value. Positive integers are accepted (e.g., `time_period=60`, `time_period=200`) |
+| series\_type    | string  | true      | The desired price type in the time series. Four types are supported: `close`, `open`, `high`, `low` |
+| datatype        | string  | optional  | By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the daily times series in JSON format; `csv` returns the time seris as a CSV (comma spearated value) file. |
+| apikey          | string  | true      | Your API key | 
+
+Example JSON Endpoint:  
+
+
+[https://www.alphavantage.co/query?function=TEMA&symbol=MSFT&interval=weekly&time_period=10&series_type=open&apikey=demo](https://www.alphavantage.co/query?function=TEMA&symbol=MSFT&interval=weekly&time_period=10&series_type=open&apikey=demo) 
+
+
+Example Response:  
 
 ```javascript
 {
-    "name": "Cake's name",
-    "recipe": "Cake's recipe name",
-    "cake": "Binary cake"
+  "Meta Data": {
+    "1: Symbol": "MSFT",
+    "2: Indicator": "Triple Exponential Moving Average (TEMA)",
+    "3: Last Refreshed": "2019-03-11",
+    "4: Interval": "weekly",
+    "5: Time Period": 10,
+    "6: Series Type": "open",
+    "7: Time Zone": "US/Eastern"
+  },
+  "Technical Analysis: TEMA": {
+    "2019-03-11": {
+      "TEMA": "111.8031"
+    },
+    "2019-03-08": {
+      "TEMA": "111.1993"
+    },
+    "2019-03-01": {
+      "TEMA": "108.7999"
+    },
+    "2019-02-22": {
+      "TEMA": "106.0005"
+    },
+    { ... },
+    { ... },
+    { ... },
+  }
 }
 ```
-{% endapi-method-response-example %}
 
-{% api-method-response-example httpCode=404 %}
-{% api-method-response-example-description %}
-Could not find a cake matching this query.
-{% endapi-method-response-example-description %}
-
-```javascript
-{
-    "message": "Ain't no cake like that."
-}
-```
-{% endapi-method-response-example %}
-{% endapi-method-response %}
-{% endapi-method-spec %}
-{% endapi-method %}
-
-
-
+<!-- tabs:end -->

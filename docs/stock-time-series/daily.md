@@ -1,89 +1,54 @@
-# Daily
+<center>
+  <h1>Time Series - Daily</h1>
+</center>
 
-{% api-method method="get" host="https://alphavantage.co" path="/query?" %}
-{% api-method-summary %}
-Time-Series Daily
-{% endapi-method-summary %}
+<!-- tabs:start -->
 
-{% api-method-description %}
-This API returns daily time series (date, daily open, daily high, daily low, daily close, daily volume) of the global equity specified, covering 20+ years of historical data.
-The most recent data point is the cumulative prices and volume information of the current trading day, updated realtime.
-{% endapi-method-description %}
+### **Client**
 
-{% api-method-spec %}
-{% api-method-request %}
+Coming Soon!
 
-{% api-method-query-parameters %}
-{% api-method-parameter name="function" type="string" required=true %}
-The time series of your choice. In this case, `function=TIME_SERIES_INTRADAY`
-{% endapi-method-parameter %}
+### **API Reference**
 
-{% api-method-parameter name="symbol" type="string" required=true %}
-The name of the equity of your choice. For example: `symbol=MSFT`
-{% endapi-method-parameter %}
+This API returns daily time series (date, daily open, daily high, daily low, daily close, daily volume) of the global equity specified, covering 20+ years of historical data.  
+The most recent data point is the cumulative prices and volume information of the current trading day, updated realtime.  
 
-{% api-method-parameter name="outputsize" type="string" %}
-By default, `outputsize=compact`. Strings `compact` and `full` are accepted with the following specifications: `compact` returns only the latest 100 data points; `full` returns the full-length time series of 20+ years of historical data. The "compact" option is recommended if you would like to reduce the data size of each API call. 
-{% endapi-method-parameter %}
+| Parameter       | Object  | Required  | Description |
+| :---            | :---:   | :---:     | :---        |
+| function        | string  | true      | The function of your choice. In this case, `function=TIME_SERIES_INTRADAY` |
+| symbol          | string  | true      | The name of the equity of your choice. The example: `symbol=MSFT` |
+| interval        | string  | true      | Time interval between two consecutive data points in the time series. The following calues are supported: `1min`, `5min`, `15min`, `30min`, `60min` |
+| outputsize      | string  | optional  | By default, `outputsize=compact`. Strings `compact` and `full` are accepted with the following specifications: `compact` returns only the latest 100 data points; `full` returns the full-length intraday time series. The "compact" option is recommended if you would like to reduce the data size of each API call.
+| datatype        | string  | optional  | By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the intraday times series in JSON format; `csv` returns the time seris as a CSV (comma spearated value) file. |
+| apikey          | string  | true      | Your API key | 
 
-{% api-method-parameter name="datatype" type="string" %}
-By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the intraday time series in JSON format; `csv` returns the time series as a CSV (comma separated value) file. 
-{% endapi-method-parameter %}
+Example JSON Endpoint:  
 
-{% api-method-parameter name="apikey" type="string" required=true %}
-Your API key.
-{% endapi-method-parameter %}
+[https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=demo](https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=demo)
 
-{% endapi-method-query-parameters %}
-{% endapi-method-request %}
-
-
-{% api-method-response %}
-
-{% api-method-response-example httpCode=200 %}
-{% api-method-response-example-description %}
-Success
-{% endapi-method-response-example-description %}
+Example Response:  
 
 ```javascript
 {
   "Meta Data": {
-    "1. Information": "Daily Prices (open, high, low, close) and Volume",
+    "1. Information": "Daily Prices (open, high, low, close) and Volumes",
     "2. Symbol": "MSFT",
-    "3. Last Refreshed": "2019-02-20 13:53:08",
+    "3. Last Refreshed": "2019-02-22",
     "4. Output Size": "Compact",
     "5. Time Zone": "US/Eastern"
-    },
-    "Time Series (Daily)": {
-      "2019-02-20": {
-      "1. open": "107.8600",
-      "2. high": "107.9400",
-      "3. low": "106.2950",
-      "4. close": "106.8600",
-      "5. volume": "11090306"
-    },
-    { ... },
-    { ... },
-    { ... },
-  }
+  },
+  "Time Series (Daily)": {
+    "2019-02-22": {
+    "1. open": "110.0500",
+    "2. high": "111.2000",
+    "3. low": "109.8200",
+    "4. close": "110.9700",
+    "5. volume": "27763218"
+  },
+  { ... },
+  { ... },
+  { ... }
 }
 ```
-{% endapi-method-response-example %}
 
-{% api-method-response-example httpCode=404 %}
-{% api-method-response-example-description %}
-Invalid API Call Error Message. Note: The http status code actually returns 200 with the error message.
-{% endapi-method-response-example-description %}
-
-```javascript
-{
-    "Error Message": "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."
-}
-```
-{% endapi-method-response-example %}
-{% endapi-method-response %}
-{% endapi-method-spec %}
-{% endapi-method %}
-
-
-
+<!-- tabs:end -->

@@ -2,15 +2,16 @@
   <h1>Search</h1>
 </center>
 
-##### Quick API Reference:
-
 <!-- tabs:start -->
 
-#### **Endpoint**
+#### **Client**
 
-The Search Endpoint returns the best-matching symbols and market information based on keywords of your choice. The search results also contain match scores that provide you with the full flexibility to develop your own search and filtering logic. 
+Coming Soon!
 
-> GET `https://alphavantage.co/query?`
+#### **API Reference**
+
+The Search Endpoint returns the best-matching symbols and market information based on keywords of your choice.  
+The search results also contain match scores that provide you with the full flexibility to develop your own search and filtering logic. 
 
 | Parameter       | Object  | Required  | Description |
 | :---            | :---:   | :---:     | :---        |
@@ -19,12 +20,11 @@ The Search Endpoint returns the best-matching symbols and market information bas
 | datatype        | string  | optional  | By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the search results in JSON format; `csv` returns the search results as a CSV (comma separated value) file. |
 | apikey          | string  | true      | Your API key | 
 
-Example (Click for JSON output):  
+Example JSON Endpoint:  
+
 [https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=Micro&apikey=demo](https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=Micro&apikey=demo)
 
-#### **Response**
-
-> http code: 200
+Example Response:  
 
 ```javascript
 {
@@ -68,13 +68,4 @@ Example (Click for JSON output):
   ]
 }
 ```
-
-> http code: 404
-
-```javascript
-{
-    "Error Message": "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."
-}
-```
-
 <!-- tabs:end -->

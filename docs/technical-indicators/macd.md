@@ -1,68 +1,66 @@
-# MACD
+<center>
+  <h1>Technical Indicators - Moving Average Convergence / Divergence</h1>
+</center>
 
-{% api-method method="get" host="https://api.cakes.com" path="/v1/cakes/:id" %}
-{% api-method-summary %}
-Get Cakes
-{% endapi-method-summary %}
+<!-- tabs:start -->
 
-{% api-method-description %}
-This endpoint allows you to get free cakes.
-{% endapi-method-description %}
+### **Client**
 
-{% api-method-spec %}
-{% api-method-request %}
-{% api-method-path-parameters %}
-{% api-method-parameter name="id" type="string" %}
-ID of the cake to get, for free of course.
-{% endapi-method-parameter %}
-{% endapi-method-path-parameters %}
+Coming Soon!
 
-{% api-method-headers %}
-{% api-method-parameter name="Authentication" type="string" required=true %}
-Authentication token to track down who is emptying our stocks.
-{% endapi-method-parameter %}
-{% endapi-method-headers %}
+### **API Reference**
 
-{% api-method-query-parameters %}
-{% api-method-parameter name="recipe" type="string" %}
-The API will do its best to find a cake matching the provided recipe.
-{% endapi-method-parameter %}
+This API returns the moving average convergence / divergence (MACD) values. See also: [Investopedia article](https://www.investopedia.com/articles/forex/05/macddiverge.asp) and [mathematical reference](https://www.fmlabs.com/reference/default.htm?url=MACD.htm)
 
-{% api-method-parameter name="gluten" type="boolean" %}
-Whether the cake should be gluten-free or not.
-{% endapi-method-parameter %}
-{% endapi-method-query-parameters %}
-{% endapi-method-request %}
+| Parameter       | Object  | Required  | Description |
+| :---            | :---:   | :---:     | :---        |
+| function        | string  | true      | The technical indicator of your choice. In this case, `function=MACD` |
+| symbol          | string  | true      | The name of the security of your choice. The example: `symbol=MSFT` |
+| interval        | string  | true      | Time interval between two consecutive data points in the time series. The following calues are supported: `1min`, `5min`, `15min`, `30min`, `60min` |
+| outputsize      | string  | optional  | By default, `outputsize=compact`. Strings `compact` and `full` are accepted with the following specifications: `compact` returns only the latest 100 data points in the intraday time series; `full` returns the full-length intraday time series. The "compact" option is recommended if you would like to reduce the data size of each API call.
+| datatype        | string  | optional  | By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the intraday times series in JSON format; `csv` returns the time seris as a CSV (comma spearated value) file. |
+| apikey          | string  | true      | Your API key | 
 
-{% api-method-response %}
-{% api-method-response-example httpCode=200 %}
-{% api-method-response-example-description %}
-Cake successfully retrieved.
-{% endapi-method-response-example-description %}
+Example JSON Endpoint:  
+
+[https://www.alphavantage.co/query?function=MACD&symbol=MSFT&interval=daily&series_type=open&apikey=demo](https://www.alphavantage.co/query?function=MACD&symbol=MSFT&interval=daily&series_type=open&apikey=demo)
+
+Example Response:  
 
 ```javascript
 {
-    "name": "Cake's name",
-    "recipe": "Cake's recipe name",
-    "cake": "Binary cake"
+  "Meta Data": {
+    "1: Symbol": "MSFT",
+    "2: Indicator": "Moving Average Convergence/Divergence (MACD)",
+    "3: Last Refreshed": "2019-03-12",
+    "4: Interval": "daily",
+    "5.1: Fast Period": 12,
+    "5.2: Slow Period": 26,
+    "5.3: Signal Period": 9,
+    "6: Series Type": "open",
+    "7: Time Zone": "US/Eastern"
+  },
+  "Technical Analysis: MACD": {
+    "2019-03-12": {
+      "MACD": "1.5413",
+      "MACD_Signal": "1.6195",
+      "MACD_Hist": "-0.0782"
+    },
+    "2019-03-11": {
+      "MACD": "1.4838",
+      "MACD_Signal": "1.6390",
+      "MACD_Hist": "-0.1553"
+    },
+    "2019-03-08": {
+      "MACD": "1.5751",
+      "MACD_Signal": "1.6779",
+      "MACD_Hist": "-0.1028"
+    },
+    { ... },
+    { ... },
+    { ... },
+  }
 }
 ```
-{% endapi-method-response-example %}
 
-{% api-method-response-example httpCode=404 %}
-{% api-method-response-example-description %}
-Could not find a cake matching this query.
-{% endapi-method-response-example-description %}
-
-```javascript
-{
-    "message": "Ain't no cake like that."
-}
-```
-{% endapi-method-response-example %}
-{% endapi-method-response %}
-{% endapi-method-spec %}
-{% endapi-method %}
-
-
-
+<!-- tabs:end -->

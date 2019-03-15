@@ -1,68 +1,73 @@
-# BBANDS
+<center>
+  <h1>Technical Indicator - Bollinger Bands</h1>
+</center>
 
-{% api-method method="get" host="https://api.cakes.com" path="/v1/cakes/:id" %}
-{% api-method-summary %}
-Get Cakes
-{% endapi-method-summary %}
+<!-- tabs:start -->
 
-{% api-method-description %}
-This endpoint allows you to get free cakes.
-{% endapi-method-description %}
+### **Client**
 
-{% api-method-spec %}
-{% api-method-request %}
-{% api-method-path-parameters %}
-{% api-method-parameter name="id" type="string" %}
-ID of the cake to get, for free of course.
-{% endapi-method-parameter %}
-{% endapi-method-path-parameters %}
+Coming Soon!
 
-{% api-method-headers %}
-{% api-method-parameter name="Authentication" type="string" required=true %}
-Authentication token to track down who is emptying our stocks.
-{% endapi-method-parameter %}
-{% endapi-method-headers %}
+### **API Reference**
 
-{% api-method-query-parameters %}
-{% api-method-parameter name="recipe" type="string" %}
-The API will do its best to find a cake matching the provided recipe.
-{% endapi-method-parameter %}
+This API returns the Bollinger bands (BBANDS) values. See also: [Investopedia article](https://www.investopedia.com/articles/technical/04/030304.asp) and [mathematical reference](https://www.fmlabs.com/reference/default.htm?url=Bollinger.htm)
 
-{% api-method-parameter name="gluten" type="boolean" %}
-Whether the cake should be gluten-free or not.
-{% endapi-method-parameter %}
-{% endapi-method-query-parameters %}
-{% endapi-method-request %}
+| Parameter       | Object  | Required  | Description |
+| :---            | :---:   | :---:     | :---        |
+| function        | string  | true      | The technical indicator of your choice. In this case, `function=BBANDS` |
+| symbol          | string  | true      | The name of the security of your choice. The example: `symbol=MSFT` |
+| interval        | string  | true      | Time interval between two consecutive data points in the time series. The following calues are supported: `1min`, `5min`, `15min`, `30min`, `60min`, `daily`, `weekly`, `monthly` |
+| time\_period    | string  | true      | Number of data points used to calculate each BBANDS value. Positive integers are accepted (e.g., `time_period=60`, `time_period=200`) |
+| series\_type    | string  | true      | The desired price type in the time series. Four types are supported: `close`, `open`, `high`, `low` |
+| nbdevup         | string  | optional  | The standard deviation multiplier of the upper band. Positive integers are accepted. By default, `nbdevup=2`. |
+| nbdevdn         | string  | optional  | The standard deviation multiplier of the lower band. Positive integers are accepted. By default, `nbdevdn=2`. |
+| matype          | string  | optional  | Moving average type of the time series. By default, `matype=0`. Integers 0 - 8 are accepted with the following mappings. 0 = Simple Moving Average (SMA), 1 = Exponential Moving Average (EMA), 2 = Weighted Moving Average (WMA), 3 = Double Exponential Moving Average (DEMA), 4 = Triple Exponential Moving Average (TEMA), 5 = Triangular Moving Average (TRIMA), 6 = T3 Moving Average, 7 = Kaufman Adaptive Moving Average (KAMA), 8 = MESA Adaptive Moving Average (MAMA). |
+| datatype        | string  | optional  | By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the daily time series in JSON format; `csv` returns the time seris as a CSV (comma spearated value) file. |
+| apikey          | string  | true      | Your API key | 
 
-{% api-method-response %}
-{% api-method-response-example httpCode=200 %}
-{% api-method-response-example-description %}
-Cake successfully retrieved.
-{% endapi-method-response-example-description %}
+Example JSON Endpoint:  
+
+
+[https://www.alphavantage.co/query?function=BBANDS&symbol=MSFT&interval=weekly&time_period=5&series_type=close&nbdevup=3&nbdevdn=3&apikey=demo](https://www.alphavantage.co/query?function=BBANDS&symbol=MSFT&interval=weekly&time_period=5&series_type=close&nbdevup=3&nbdevdn=3&apikey=demo)
+
+
+Example Response:  
 
 ```javascript
 {
-    "name": "Cake's name",
-    "recipe": "Cake's recipe name",
-    "cake": "Binary cake"
+  "Meta Data": {
+    "1: Symbol": "MSFT",
+    "2: Indicator": "Bollinger Bands (BBANDS)",
+    "3: Last Refreshed": "2019-03-13",
+    "4: Interval": "weekly",
+    "5: Time Period": 5,
+    "6.1: Deviation multiplier for upper band": 3,
+    "6.2: Deviation multiplier for lower band": 3,
+    "6.3: MA Type": 0,
+    "7: Series Type": "close",
+    "8: Time Zone": "US/Eastern Time"
+  },
+  "Technical Analysis: BBANDS": {
+    "2019-03-13": {
+      "Real Upper Band": "117.6334",
+      "Real Lower Band": "105.0586",
+      "Real Middle Band": "111.3460"
+    },
+    "2019-03-08": {
+      "Real Upper Band": "116.7596",
+      "Real Lower Band": "102.4004",
+      "Real Middle Band": "109.5800"
+    },
+    "2019-03-01": {
+      "Real Upper Band": "118.6033",
+      "Real Lower Band": "97.4647",
+      "Real Middle Band": "108.0340"
+    },
+    { ... },
+    { ... },
+    { ... },
+  }
 }
 ```
-{% endapi-method-response-example %}
 
-{% api-method-response-example httpCode=404 %}
-{% api-method-response-example-description %}
-Could not find a cake matching this query.
-{% endapi-method-response-example-description %}
-
-```javascript
-{
-    "message": "Ain't no cake like that."
-}
-```
-{% endapi-method-response-example %}
-{% endapi-method-response %}
-{% endapi-method-spec %}
-{% endapi-method %}
-
-
-
+<!-- tabs:end -->

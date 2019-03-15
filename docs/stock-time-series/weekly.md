@@ -1,60 +1,46 @@
-# Weekly
+<center>
+  <h1>Time Series - Weekly</h1>
+</center>
 
-{% api-method method="get" host="https://alphavantage.co" path="/query?" %}
-{% api-method-summary %}
-Time-Series Weekly
-{% endapi-method-summary %}
+<!-- tabs:start -->
 
-{% api-method-description %}
-This API returns weekly time series (last trading day of each week, weekly open, weekly high, weekly low, weekly close, weekly volume) of the global equity specified, covering 20+ years of historical data.
+### **Client**
+
+Coming Soon!
+
+### **API Reference**
+
+This API returns weekly time series (last trading day of each week, weekly open, weekly high, weekly low, weekly close, weekly volume) of the global equity specified, covering 20+ years of historical data.  
 The latest data point is the cumulative prices and volume information for the week (or partial week) that contains the current trading day, updated realtime. 
-{% endapi-method-description %}
 
-{% api-method-spec %}
-{% api-method-request %}
+| Parameter       | Object  | Required  | Description |
+| :---            | :---:   | :---:     | :---        |
+| function        | string  | true      | The function of your choice. In this case, `function=TIME_SERIES_INTRADAY` |
+| symbol          | string  | true      | The name of the equity of your choice. The example: `symbol=MSFT` |
+| datatype        | string  | optional  | By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the weekly times series in JSON format; `csv` returns the time seris as a CSV (comma spearated value) file. |
+| apikey          | string  | true      | Your API key | 
 
-{% api-method-query-parameters %}
-{% api-method-parameter name="function" type="string" required=true %}
-The time series of your choice. In this case, `function=TIME_SERIES_WEEKLY`
-{% endapi-method-parameter %}
+Example JSON Endpoint:  
 
-{% api-method-parameter name="symbol" type="string" required=true %}
-The name of the equity of your choice. For example: `symbol=MSFT`
-{% endapi-method-parameter %}
+[https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=MSFT&apikey=demo](https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=MSFT&apikey=demo)
 
-{% api-method-parameter name="datatype" type="string" %}
-By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the weekly time series in JSON format; `csv` returns the time series as a CSV (comma separated value) file. 
-{% endapi-method-parameter %}
-
-{% api-method-parameter name="apikey" type="string" required=true %}
-Your API key.
-{% endapi-method-parameter %}
-
-{% endapi-method-query-parameters %}
-{% endapi-method-request %}
-
-
-{% api-method-response %}
-{% api-method-response-example httpCode=200 %}
-{% api-method-response-example-description %}
-Success
-{% endapi-method-response-example-description %}
+Example Response:  
 
 ```javascript
 {
   "Meta Data": {
     "1. Information": "Weekly Prices (open, high, low, close) and Volumes",
     "2. Symbol": "MSFT",
-    "3. Last Refreshed": "2019-02-20 14:12:46",
+    "3. Last Refreshed": "2019-02-25",
     "4. Time Zone": "US/Eastern"
   },
   "Weekly Time Series": {
-    "2019-02-20": {
-      "1. open": "107.7900",
-      "2. high": "108.6600",
-      "3. low": "106.2950",
-      "4. close": "106.7157",
-      "5. volume": "30268413"
+    "2019-02-25": {
+      "1. open": "111.7600",
+      "2. high": "112.1800",
+      "3. low": "111.2600",
+      "4. close": "111.5900",
+      "5. volume": "23750599"
     },
     { ... },
     { ... },
@@ -62,22 +48,5 @@ Success
   }
 }
 ```
-{% endapi-method-response-example %}
 
-{% api-method-response-example httpCode=404 %}
-{% api-method-response-example-description %}
-Invalid API Call Error Message.
-{% endapi-method-response-example-description %}
-
-```javascript
-{
-    "Error Message": "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."
-}
-```
-{% endapi-method-response-example %}
-{% endapi-method-response %}
-{% endapi-method-spec %}
-{% endapi-method %}
-
-
-
+<!-- tabs:end -->

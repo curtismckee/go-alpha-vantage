@@ -1,86 +1,55 @@
-# Monthly Adjusted
+<center>
+  <h1>Time Series - Monthly Adjusted</h1>
+</center>
 
-{% api-method method="get" host="https://alphavantage.co" path="/query?" %}
-{% api-method-summary %}
-Time-Series Monthly Adjusted
-{% endapi-method-summary %}
+<!-- tabs:start -->
 
-{% api-method-description %}
-This API returns monthly adjusted time series (last trading day of each month, monthly open, monthly high, monthly low, monthly close, monthly adjusted close, monthly volume, monthly dividend) of the equity specified, covering 20+ years of historical data. 
-The latest data point is the cumulative prices and volume information for the month (or partial month) that contains the current trading day, updated realtime. 
-{% endapi-method-description %}
+### **Client**
 
-{% api-method-spec %}
-{% api-method-request %}
+Coming Soon!
 
-{% api-method-query-parameters %}
-{% api-method-parameter name="function" type="string" required=true %}
-The time series of your choice. In this case, `function=TIME_SERIES_MONTHLY_ADJUSTED`
-{% endapi-method-parameter %}
+### **API Reference**
 
-{% api-method-parameter name="symbol" type="string" required=true %}
-The name of the equity of your choice. For example: `symbol=MSFT`
-{% endapi-method-parameter %}
+This API returns intraday time series (timestamp, open, high, low, close, volume) of the equity specified.
 
-{% api-method-parameter name="datatype" type="string" %}
-By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the intraday time series in JSON format; `csv` returns the time series as a CSV (comma separated value) file. 
-{% endapi-method-parameter %}
+| Parameter       | Object  | Required  | Description |
+| :---            | :---:   | :---:     | :---        |
+| function        | string  | true      | The function of your choice. In this case, `function=TIME_SERIES_INTRADAY` |
+| symbol          | string  | true      | The name of the equity of your choice. The example: `symbol=MSFT` |
+| interval        | string  | true      | Time interval between two consecutive data points in the time series. The following calues are supported: `1min`, `5min`, `15min`, `30min`, `60min` |
+| outputsize      | string  | optional  | By default, `outputsize=compact`. Strings `compact` and `full` are accepted with the following specifications: `compact` returns only the latest 100 data points in the intraday time series; `full` returns the full-length intraday time series. The "compact" option is recommended if you would like to reduce the data size of each API call.
+| datatype        | string  | optional  | By default, `datatype=json`. Strings `json` and `csv` are accepted with the following specifications: `json` returns the intraday times series in JSON format; `csv` returns the time seris as a CSV (comma spearated value) file. |
+| apikey          | string  | true      | Your API key | 
 
-{% api-method-parameter name="apikey" type="string" required=true %}
-Your API key.
-{% endapi-method-parameter %}
+Example JSON Endpoint:  
 
-{% endapi-method-query-parameters %}
-{% endapi-method-request %}
+[https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=5min&apikey=demo](https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=5min&apikey=demo)
 
-
-{% api-method-response %}
-
-{% api-method-response-example httpCode=200 %}
-{% api-method-response-example-description %}
-Success
-{% endapi-method-response-example-description %}
+Example Response:  
 
 ```javascript
 {
   "Meta Data": {
-    "1. Information": "Monthly Adjusted Prices and Volumes",
+    "1. Information": "Intraday (5min) open, high, low, close prices and volume",
     "2. Symbol": "MSFT",
-    "3. Last Refreshed": "2019-02-20 14:27:22",
-    "4. Time Zone": "US/Eastern"
-  },
-  "Monthly Adjusted Time Series": {
-    "2019-02-20": {
-      "1. open": "103.7750",
-      "2. high": "108.6600",
-      "3. low": "102.3500",
-      "4. close": "106.5100",
-      "5. adjusted close": "106.5100",
-      "6. volume": "307629143",
-      "7. dividend amount": "0.0000"
+    "3. Last Refreshed": "2019-02-20 12:25:00",
+    "4. Interval": "5min",
+    "5. Output Size": "Compact",
+    "6. Time Zone": "US/Eastern"
     },
-    { ... }.
+    "Time Series (5min)": {
+      "2019-02-20 12:25:00": {
+      "1. open": "107.0099",
+      "2. high": "107.0099",
+      "3. low": "106.7700",
+      "4. close": "106.8300",
+      "5. volume": "207752"
+    },
+    { ... },
     { ... },
     { ... },
   }
 }
 ```
-{% endapi-method-response-example %}
 
-{% api-method-response-example httpCode=404 %}
-{% api-method-response-example-description %}
-Invalid API Call Error Message.
-{% endapi-method-response-example-description %}
-
-```javascript
-{
-    "Error Message": "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."
-}
-```
-{% endapi-method-response-example %}
-{% endapi-method-response %}
-{% endapi-method-spec %}
-{% endapi-method %}
-
-
-
+<!-- tabs:end -->
