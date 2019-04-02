@@ -25,9 +25,11 @@ func parseInt(val string) (int, error) {
 
 // parseDate parses a date value from a string.
 // An error is returned if the value is not in one of the dateFormat formats.
+// Alpha Vantage times are in US/Eastern timezone
 func parseDate(v string, dateFormat ...string) (time.Time, error) {
+	loc, _ := time.LoadLocation("US/Eastern")
 	for _, format := range dateFormat {
-		t, err := time.Parse(format, v)
+		t, err := time.ParseInLocation(format, v, loc)
 		if err != nil {
 			continue
 		}
