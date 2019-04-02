@@ -23,6 +23,7 @@ const (
 	queryInterval   = "interval"
 
 	valueCompact                  = "compact"
+	valueFull                     = "full"
 	valueJson                     = "csv"
 	valueDigitcalCurrencyEndpoint = "DIGITAL_CURRENCY_INTRADAY"
 
@@ -30,6 +31,24 @@ const (
 
 	requestTimeout = time.Second * 30
 )
+
+type OutputSize uint8
+
+const (
+	Compact OutputSize = iota
+	Full
+)
+
+func (outputSize OutputSize) String() string {
+	switch outputSize {
+	case Compact:
+		return valueCompact
+	case Full:
+		return valueFull
+	}
+	// default to compact if a non expected value is passed
+	return valueCompact
+}
 
 // Connection is an interface that requests data from a server
 type Connection interface {
@@ -124,11 +143,13 @@ func (c *Client) StockTimeSeriesIntraday(timeInterval TimeInterval, symbol strin
 }
 
 // StockTimeSeries queries a stock symbols statistics for a given time frame.
+// Optionally an OutputSize can be specified. Only the first optional outputSize will be used.
 // Data is returned from past to present.
-func (c *Client) StockTimeSeries(timeSeries TimeSeries, symbol string) ([]*TimeSeriesValue, error) {
+func (c *Client) StockTimeSeries(timeSeries TimeSeries, symbol string, optionalOutputSize ...OutputSize) ([]*TimeSeriesValue, error) {
 	endpoint := c.buildRequestPath(map[string]string{
 		queryEndpoint: timeSeries.keyName(),
 		querySymbol:   symbol,
+		queryOutputSize: getOutputSize(optionalOutputSize),
 	})
 	response, err := c.conn.Request(endpoint)
 	if err != nil {
@@ -136,6 +157,14 @@ func (c *Client) StockTimeSeries(timeSeries TimeSeries, symbol string) ([]*TimeS
 	}
 	defer response.Body.Close()
 	return parseTimeSeriesData(response.Body)
+}
+
+func getOutputSize(optionalOutputSize []OutputSize) string {
+	if len(optionalOutputSize) > 0 {
+		return optionalOutputSize[0].String()
+	}
+
+	return Compact.String()
 }
 
 // DigitalCurrency queries statistics of a digital currency in terms of a physical currency throughout the day.
