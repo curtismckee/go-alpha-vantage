@@ -13,6 +13,17 @@ import (
 // For valid options, see the TimeSeries* package constants.
 type TimeSeries uint8
 
+// TimeSeriesOutputSize data type alias.
+type TimeSeriesOutputSize string
+
+const (
+	// CompactOutput returns only 100 data points (as per API documentation).
+	// Original default when TimeSeriesOutputSize did not exist.
+	CompactOutput TimeSeriesOutputSize = "compact"
+	// FullOutput returns all data points.
+	FullOutput TimeSeriesOutputSize = "full"
+)
+
 const (
 	TimeSeriesDaily TimeSeries = iota
 	TimeSeriesDailyAdjusted

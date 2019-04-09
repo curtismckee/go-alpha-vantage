@@ -22,7 +22,6 @@ const (
 	queryEndpoint   = "function"
 	queryInterval   = "interval"
 
-	valueCompact                  = "compact"
 	valueJson                     = "csv"
 	valueDigitcalCurrencyEndpoint = "DIGITAL_CURRENCY_INTRADAY"
 
@@ -95,7 +94,7 @@ func (c *Client) buildRequestPath(params map[string]string) *url.URL {
 	query := endpoint.Query()
 	query.Set(queryApiKey, c.apiKey)
 	query.Set(queryDataType, valueJson)
-	query.Set(queryOutputSize, valueCompact)
+	query.Set(queryOutputSize, string(CompactOutput))
 
 	// additional parameters
 	for key, value := range params {
@@ -125,10 +124,11 @@ func (c *Client) StockTimeSeriesIntraday(timeInterval TimeInterval, symbol strin
 
 // StockTimeSeries queries a stock symbols statistics for a given time frame.
 // Data is returned from past to present.
-func (c *Client) StockTimeSeries(timeSeries TimeSeries, symbol string) ([]*TimeSeriesValue, error) {
+func (c *Client) StockTimeSeries(timeSeries TimeSeries, symbol string, outputSize TimeSeriesOutputSize) ([]*TimeSeriesValue, error) {
 	endpoint := c.buildRequestPath(map[string]string{
-		queryEndpoint: timeSeries.keyName(),
-		querySymbol:   symbol,
+		queryEndpoint:   timeSeries.keyName(),
+		querySymbol:     symbol,
+		queryOutputSize: string(outputSize),
 	})
 	response, err := c.conn.Request(endpoint)
 	if err != nil {

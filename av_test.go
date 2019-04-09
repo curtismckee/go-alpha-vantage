@@ -22,7 +22,7 @@ func TestClient_StockTimeSeries_buildsUrl(t *testing.T) {
 	conn := NewResponseConnection(res)
 	client := NewClientConnection(testApiKey, conn)
 
-	client.StockTimeSeries(TimeSeriesDaily, "TEST")
+	client.StockTimeSeries(TimeSeriesDaily, "TEST", CompactOutput)
 
 	if conn.endpoint.String() != expected {
 		t.Errorf("unexpected url, want %s got %s", expected, conn.endpoint.String())
@@ -37,7 +37,7 @@ func TestClient_StockTimeSeries_getsResults(t *testing.T) {
 	conn := NewResponseConnection(res)
 	client := NewClientConnection(testApiKey, conn)
 
-	result, err := client.StockTimeSeries(TimeSeriesDaily, "TEST")
+	result, err := client.StockTimeSeries(TimeSeriesDaily, "TEST", CompactOutput)
 	if err != nil {
 		t.Fatalf("unexpected error, got %v", err)
 	}
