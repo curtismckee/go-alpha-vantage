@@ -1,6 +1,8 @@
 package av
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"time"
@@ -21,10 +23,13 @@ const (
 	queryMarket     = "market"
 	queryEndpoint   = "function"
 	queryInterval   = "interval"
+	queryKeywords   = "keywords"
 
 	valueCompact                  = "compact"
-	valueJson                     = "csv"
+	valueCsv                      = "csv"
+	valueJson                     = "json"
 	valueDigitcalCurrencyEndpoint = "DIGITAL_CURRENCY_INTRADAY"
+	valueSymbolSearchEndpoint     = "SYMBOL_SEARCH"
 
 	pathQuery = "query"
 
@@ -94,7 +99,7 @@ func (c *Client) buildRequestPath(params map[string]string) *url.URL {
 	// base parameters
 	query := endpoint.Query()
 	query.Set(queryApiKey, c.apiKey)
-	query.Set(queryDataType, valueJson)
+	query.Set(queryDataType, valueCsv)
 	query.Set(queryOutputSize, valueCompact)
 
 	// additional parameters
@@ -152,4 +157,30 @@ func (c *Client) DigitalCurrency(digital, physical string) ([]*DigitalCurrencySe
 	}
 	defer response.Body.Close()
 	return parseDigitalCurrencySeriesData(response.Body)
+}
+
+func (c *Client) SymbolSearch(keywords string) (*SymbolMatches, error) {
+	endpoint := c.buildRequestPath(map[string]string{
+		queryEndpoint: valueSymbolSearchEndpoint,
+		queryDataType: valueJson,
+		queryKeywords: keywords,
+	})
+
+	response, err := c.conn.Request(endpoint)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer response.Body.Close()
+	body, err := ioutil.ReadAll(response.Body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var matches *SymbolMatches
+	json.Unmarshal(body, &matches)
+
+	return matches, nil
 }
