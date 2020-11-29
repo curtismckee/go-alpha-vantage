@@ -20,13 +20,16 @@ const (
 	TimeSeriesWeeklyAdjusted
 	TimeSeriesMonthly
 	TimeSeriesMonthlyAdjusted
-	timeSeriesIntraday // intentionally not exported
+	timeSeriesIntraday         // intentionally not exported
+	timeSeriesIntradayExtended // intentionally not exported
 )
 
 func (t TimeSeries) String() string {
 	switch t {
 	case timeSeriesIntraday:
 		return "TimeSeriesIntraday"
+	case timeSeriesIntradayExtended:
+		return "TimeSeriesIntradayExtended"
 	case TimeSeriesDaily:
 		return "TimeSeriesDaily"
 	case TimeSeriesDailyAdjusted:
@@ -48,6 +51,8 @@ func (t TimeSeries) keyName() string {
 	switch t {
 	case timeSeriesIntraday:
 		return "TIME_SERIES_INTRADAY"
+	case timeSeriesIntradayExtended:
+		return "TIME_SERIES_INTRADAY_EXTENDED"
 	case TimeSeriesDaily:
 		return "TIME_SERIES_DAILY"
 	case TimeSeriesDailyAdjusted:
