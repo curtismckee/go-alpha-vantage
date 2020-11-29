@@ -12,18 +12,19 @@ const (
 )
 
 const (
-	schemeHttps = "https"
+	schemeHTTPS = "https"
 
-	queryApiKey     = "apikey"
+	queryAPIKey     = "apikey"
 	queryDataType   = "datatype"
 	queryOutputSize = "outputsize"
 	querySymbol     = "symbol"
 	queryMarket     = "market"
 	queryEndpoint   = "function"
 	queryInterval   = "interval"
+	querySlice      = "slice"
 
 	valueCompact                  = "compact"
-	valueJson                     = "csv"
+	valueJSON                     = "csv"
 	valueDigitcalCurrencyEndpoint = "DIGITAL_CURRENCY_INTRADAY"
 
 	pathQuery = "query"
@@ -42,7 +43,7 @@ type avConnection struct {
 	host   string
 }
 
-// NewConnectionHost creates a new connection at the default Alpha Vantage host
+// NewConnection creates a new connection at the default Alpha Vantage host
 func NewConnection() Connection {
 	return NewConnectionHost(HostDefault)
 }
@@ -60,10 +61,10 @@ func NewConnectionHost(host string) Connection {
 
 // Request will make an HTTP GET request for the given endpoint from Alpha Vantage
 func (conn *avConnection) Request(endpoint *url.URL) (*http.Response, error) {
-	endpoint.Scheme = schemeHttps
+	endpoint.Scheme = schemeHTTPS
 	endpoint.Host = conn.host
-	targetUrl := endpoint.String()
-	return conn.client.Get(targetUrl)
+	targetURL := endpoint.String()
+	return conn.client.Get(targetURL)
 }
 
 // Client is a service used to query Alpha Vantage stock data
@@ -72,7 +73,7 @@ type Client struct {
 	apiKey string
 }
 
-// NewClientConnection creates a new Client with the default Alpha Vantage connection
+// NewClient creates a new Client with the default Alpha Vantage connection
 func NewClient(apiKey string) *Client {
 	return NewClientConnection(apiKey, NewConnection())
 }
@@ -93,8 +94,8 @@ func (c *Client) buildRequestPath(params map[string]string) *url.URL {
 
 	// base parameters
 	query := endpoint.Query()
-	query.Set(queryApiKey, c.apiKey)
-	query.Set(queryDataType, valueJson)
+	query.Set(queryAPIKey, c.apiKey)
+	query.Set(queryDataType, valueJSON)
 	query.Set(queryOutputSize, valueCompact)
 
 	// additional parameters
@@ -113,6 +114,23 @@ func (c *Client) StockTimeSeriesIntraday(timeInterval TimeInterval, symbol strin
 	endpoint := c.buildRequestPath(map[string]string{
 		queryEndpoint: timeSeriesIntraday.keyName(),
 		queryInterval: timeInterval.keyName(),
+		querySymbol:   symbol,
+	})
+	response, err := c.conn.Request(endpoint)
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+	return parseTimeSeriesData(response.Body)
+}
+
+// StockTimeSeriesIntradaySlice queries a stock symbols statistics for a given
+// 30-day window. Data is returned from past to present.
+func (c *Client) StockTimeSeriesIntradaySlice(timeInterval TimeInterval, symbol string, slice Slice) ([]*TimeSeriesValue, error) {
+	endpoint := c.buildRequestPath(map[string]string{
+		queryEndpoint: timeSeriesIntradayExtended.keyName(),
+		queryInterval: timeInterval.keyName(),
+		querySlice:    string(slice),
 		querySymbol:   symbol,
 	})
 	response, err := c.conn.Request(endpoint)
